@@ -298,6 +298,39 @@ arg :  ```$new_rule_tag_error_message ``` - The new rule tag error message (stri
 
 ex: ```'This element -  [%s] is required *'```
 
+### Available Rules
+```
+   /**
+    * Default Errors Messages
+    * @var
+    */
+   protected $WBB_default_error_messages = array (
+  	  'required'           => '%s is required.' ,
+  	  'min_length'         => '%s must be at least  %d characters or longer.' ,
+  	  'max_length'         => '%s must be no longer than %d characters.' ,
+  	  'valid_url'          => '%s is an invalid url.' ,
+  	  'regex_match'        => '%s is an invalid data format.' ,
+  	  'matches'            => '%s must match %s .' ,
+  	  'exact_length'       => '%s must be exactly %d characters in length.' ,
+  	  'valid_email'        => '%s is an invalid email address.' ,
+  	  'valid_ip'           => '%s is an invalid IP format.' ,
+  	  'alpha'              => '%s is an invalid alpha format.' ,
+  	  'alpha_numeric'      => '%s is an invalid alpha-numeric format.' ,
+  	  'alpha_dash'         => '%s %s is an invalid alpha-dash format.' ,
+  	  'numeric'            => '%s is an invalid numeric format.' ,
+  	  'is_numeric'         => '%s is not numeric.' ,
+  	  'integer'            => '%s must consist of integer value.' ,
+  	  'decimal'            => '%s must consist of decimal value.' ,
+  	  'greater_than'       => '%s must be greater than %d .' ,
+  	  'less_than'          => '%s must be less than %d .' ,
+  	  'is_natural'         => '%s is not natural.' ,
+  	  'is_natural_no_zero' => '%s is a Natural number, but not a zero  (1,2,3, etc.)' ,
+  	  'valid_base64'       => '%s is invalid base 64 data' ,
+  	  'word_limit'         => '%s must be no longer than %d words.' ,
+   );
+```
+
+
 
 
 
