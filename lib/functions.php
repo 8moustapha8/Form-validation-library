@@ -36,7 +36,7 @@ if ( isset( $_POST[ 'form2_submit' ] ) )
     //Set New Rule Error Message
     $form_validation_class->WBB_setErrorMessage ( 'required' , 'This element -  [%s] is required *' );
 
-    //Set new element individual element rule
+    //Set new element rule
     $new_rule_element = array (
 	  'field' => 'check_word_limit2' ,
 	  'label' => 'Element3' ,
