@@ -236,10 +236,13 @@ if ( isset( $_POST[ 'form2_submit' ] ) )
 ```
 ### Available Functions:
 
-#### WBB_setRule ( $form_tag , $new_rule_element )
+#### 1) WBB_setRule ( $form_tag , $new_rule_element )
  ```
   $form_validation_class->WBB_setRule ( $form_tag , $new_rule_element );
  ```
+
+ Define value to validate for individual form rule array
+
 
  arg : ```$form_tag``` - The form array tag (string)
 
@@ -261,10 +264,12 @@ if ( isset( $_POST[ 'form2_submit' ] ) )
   );
   ```
 
-#### WBB_setElementRule ( $form_tag  , $form_element_name , $new_form_element_rule)
+#### 2) WBB_setElementRule ( $form_tag  , $form_element_name , $new_form_element_rule)
 ```
   $form_validation_class->WBB_setElementRule ( $form_tag  , $form_element_name , $new_form_element_rule);
 ```
+
+Add rule tag for a particular form element
 
 arg : ```$form_tag``` - The form array tag (string)
 
@@ -277,6 +282,21 @@ ex: ```'check_required2'```
 arg :  ```$new_form_element_rule``` - The new form element rule (array)
 
 ex: ```array ( 'word_limit' => 3 ) ```
+
+#### 3) WBB_setErrorMessage ( $rule_tag , $new_rule_tag_error_message  )
+```
+  $form_validation_class->WBB_setErrorMessage ( $rule_tag , $new_rule_tag_error_message  );
+```
+
+Set custom rule tag error message
+
+arg : ```$rule_tag``` - The rule tag (string)
+
+ex: ```'required'```
+
+arg :  ```$new_rule_tag_error_message ``` - The new rule tag error message (string)
+
+ex: ```'This element -  [%s] is required *'```
 
 
 
