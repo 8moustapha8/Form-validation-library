@@ -236,6 +236,7 @@ if ( isset( $_POST[ 'form2_submit' ] ) )
 ```
 ### Available Functions:
 
+#### WBB_setRule ( $form_tag , $new_rule_element )
  ```
   $form_validation_class->WBB_setRule ( $form_tag , $new_rule_element );
  ```
@@ -260,6 +261,7 @@ if ( isset( $_POST[ 'form2_submit' ] ) )
   );
   ```
 
+#### WBB_setElementRule ( $form_tag  , $form_element_name , $new_form_element_rule)
 ```
   $form_validation_class->WBB_setElementRule ( $form_tag  , $form_element_name , $new_form_element_rule);
 ```
