@@ -201,7 +201,7 @@ if ( isset( $_POST[ 'form2_submit' ] ) )
     }
 }
  ```
-### Add Rule tag for a particular form element
+### Add rule tag for a particular form element
 
 ```
   //Form Validation Config Rules
@@ -234,4 +234,31 @@ if ( isset( $_POST[ 'form2_submit' ] ) )
       }
   }
 ```
+ ### Available Functions:
+
+ ```
+ $form_validation_class->WBB_setRule ( $form_tag , $new_rule_element );
+
+ ```
+
+ arg : ```$form_tag``` - The form array tag (string)
+
+ arg :  ```$new_rule_element``` - The new form element array (array)
+
+  ex:
+
+  ```
+  //Set new element rule
+  $new_rule_element = array (
+    'field' => 'check_word_limit2' ,
+    'label' => 'Element3' ,
+    'rules' => array (
+      'required'   => TRUE ,
+      'word_limit' => 5 ,
+    )
+
+  );
+
+  ```
+
 
