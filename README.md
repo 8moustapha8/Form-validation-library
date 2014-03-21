@@ -7,7 +7,6 @@ A PHP Class for Easy Form Validation
  `1 - lib/functions.php` :
 
 ```
-
 <?php
 
 //Form Validation Config Rules
@@ -73,12 +72,8 @@ if ( isset( $_POST[ 'form2_submit' ] ) )
 	  echo '<div class="row"><section><pre>' . print_r ( $getAllErrors , TRUE ) . '</pre></section>';
     }
 }
-
-
-
 ```
 2 - `lib/Form_Validation_Config.php` :
-
 
 ```
    <?php
@@ -281,3 +276,32 @@ if ( isset( $_POST[ 'form2_submit' ] ) )
 
 ```
 3 - https://github.com/webberty/Form-validation-library/blob/master/lib/WBB_Form_Validation_Class.php
+
+### Set anew rule error message
+```
+//Form Validation Config Rules
+include ( "Form_Validation_Config.php" );
+
+//Load Form Validation Class
+include ( "lib/WBB_Form_Validation_Class.php" );
+
+//Loading Form Validation Class and pass the Form validation config rules
+$form_validation_class = new WBB_Form_Validation_Class( $form_validation_config );
+
+$getError              = $form_validation_class;
+
+//Set New Rule Error Message
+$form_validation_class->WBB_setErrorMessage ( 'required' , 'This element -  [%s] is required *' );
+
+//Check if form 1 rule elements  was successfully passed
+if ( $form_validation_class->WBB_formRun ( 'form2' ) )
+{
+  echo "<h1>Form 1 successfully Submited</h1>";
+}
+else
+{
+  //Get all Form validation errors in one array variable
+  $getAllErrors = $form_validation_class->WBB_getAllErrors ();
+  echo '<div class="row"><section><pre>' . print_r ( $getAllErrors , TRUE ) . '</pre></section>';
+}
+```
