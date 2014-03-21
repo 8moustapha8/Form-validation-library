@@ -234,14 +234,15 @@ if ( isset( $_POST[ 'form2_submit' ] ) )
       }
   }
 ```
- ### Available Functions:
+### Available Functions:
 
  ```
- $form_validation_class->WBB_setRule ( $form_tag , $new_rule_element );
-
+  $form_validation_class->WBB_setRule ( $form_tag , $new_rule_element );
  ```
 
  arg : ```$form_tag``` - The form array tag (string)
+
+ ex: ```'form2'```
 
  arg :  ```$new_rule_element``` - The new form element array (array)
 
@@ -256,9 +257,26 @@ if ( isset( $_POST[ 'form2_submit' ] ) )
       'required'   => TRUE ,
       'word_limit' => 5 ,
     )
-
   );
-
   ```
+
+```
+  $form_validation_class->WBB_setElementRule ( $form_tag  , $form_element_name , $new_form_element_rule);
+```
+
+arg : ```$form_tag``` - The form array tag (string)
+
+ex: ```'form2'```
+
+arg :  ```$form_element_name``` - The form element name (string)
+
+ex: ```'check_required2'```
+
+arg :  ```$new_form_element_rule``` - The new form element rule (array)
+
+ex: ```array ( 'word_limit' => 3 ) ```
+
+
+
 
 
