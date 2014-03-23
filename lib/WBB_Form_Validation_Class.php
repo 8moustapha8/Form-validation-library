@@ -182,18 +182,18 @@ class WBB_Form_Validation_Class
 
 
     /**
-     * Register errors
+     *  Register errors
      *
      * @param      $key
      * @param      $error_tag
      * @param bool $label
      * @param bool $label_nr
+     * @param bool $label_nr2
      */
     protected function WBB_registerError ( $key , $error_tag , $label = FALSE , $label_nr = FALSE , $label_nr2 = FALSE )
     {
 
-	  $WBB_error_messages       = $this->WBB_default_error_messages;
-	  $this->WBB_errors[ $key ] = sprintf ( $WBB_error_messages[ $error_tag ] , $label , $label_nr , $label_nr2 );
+	  $this->WBB_errors[ $key ] = sprintf ( $this->WBB_default_error_messages[ $error_tag ] , $label , $label_nr , $label_nr2 );
     }
 
 
