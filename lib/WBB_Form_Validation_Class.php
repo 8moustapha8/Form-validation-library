@@ -219,17 +219,16 @@ class WBB_Form_Validation_Class
     private function WBB_formExecute ( $data )
     {
 
-	  $post             = isset( $_POST ) && ( ! empty( $_POST ) ) ? $_POST : NULL;
-	  $form_array_rules = $this->WBB_form_rules;
+	  $post = isset( $_POST ) && ( ! empty( $_POST ) ) ? $_POST : NULL;
 
 	  //Check if form method is post
 	  if ( $post )
 	  {
 
-		if ( isset( $form_array_rules[ $data ] ) )
+		if ( isset( $this->WBB_form_rules[ $data ] ) )
 		{
 		    //Store Current Form Tag Process for a later use
-		    $this->WBB_form_rule = $form_array_rules[ $data ];
+		    $this->WBB_form_rule = $this->WBB_form_rules[ $data ];
 
 		    foreach ( $this->WBB_form_rule as $form_rule )
 		    {
