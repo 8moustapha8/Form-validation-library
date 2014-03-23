@@ -167,10 +167,38 @@ $form_validation_config = array (
 		)
 	  ) ,
 	  array (
-		'field' => 'check_word_limit' ,
+		'field' => 'check_real_url' ,
 		'label' => 'Element22' ,
 		'rules' => array (
+		    'real_url' => TRUE ,
+		)
+	  ) ,
+	  array (
+		'field' => 'check_word_limit' ,
+		'label' => 'Element23' ,
+		'rules' => array (
 		    'word_limit' => 5 ,
+		)
+	  ) ,
+	  array (
+		'field' => 'check_between_numbers' ,
+		'label' => 'Element24' ,
+		'rules' => array (
+		    'between' => array ( 12 , 31 ) , //we can use instead array(12,31) as "12,31" string format also
+		)
+	  ) ,
+	  array (
+		'field' => 'check_between_numbers' ,
+		'label' => 'Element25' ,
+		'rules' => array (
+		    'between' => array ( 12 , 31 ) , //we can use instead array(12,31) as "12,31" string format also
+		)
+	  ) ,
+	  array (
+		'field' => 'check_valid_date' ,
+		'label' => 'Element26' ,
+		'rules' => array (
+		    'valid_date' => TRUE ,
 		)
 	  ) ,
     ) ,
@@ -187,7 +215,9 @@ $form_validation_config = array (
 		'field' => 'check_required2' ,
 		'label' => 'Element2' ,
 		'rules' => array (
-		    'required'     => TRUE ,
+		    'required' => TRUE ,
+
+
 		)
 	  ) ,
 

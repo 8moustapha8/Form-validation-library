@@ -108,9 +108,24 @@
 	  <?php echo $getError->WBB_getError ( 'check_valid64_base' ) ? '<span class="label label-danger">' . $getError->WBB_getError ( 'check_valid64_base' ) . '</span>' : ''; ?>
 	  <input type="text" class="form-control normal-text " name="check_valid64_base" placeholder="valid base 64">
 
+	  <?php echo $getError->WBB_getError ( 'check_real_url' ) ? '<span class="label label-danger">' . $getError->WBB_getError ( 'check_real_url' ) . '</span>' : ''; ?>
+	  <input type="text" class="form-control normal-text " name="check_real_url" placeholder="Real url">
+
 	  <?php echo $getError->WBB_getError ( 'check_word_limit' ) ? '<span class="label label-danger">' . $getError->WBB_getError ( 'check_word_limit' ) . '</span>' : ''; ?>
-	  <input type="text" class="form-control  bottom-text-element" name="check_word_limit"
+	  <input type="text" class="form-control  normal-text" name="check_word_limit"
 		   placeholder="word limit max 5 words">
+
+	  <?php echo $getError->WBB_getError ( 'check_between_numbers' ) ? '<span class="label label-danger">' . $getError->WBB_getError ( 'check_between_numbers' ) . '</span>' : ''; ?>
+	  <input type="text" class="form-control  normal-text" name="check_between_numbers"
+		   placeholder="check between 12 and 31">
+
+	  <?php echo $getError->WBB_getError ( 'check_valid_date' ) ? '<span class="label label-danger">' . $getError->WBB_getError ( 'check_valid_date' ) . '</span>' : ''; ?>
+	  <input type="text" class="form-control  normal-text" name="check_valid_date"
+		   placeholder="validate date format">
+
+	  <?php echo $getError->WBB_getError ( 'check_credit_card_number' ) ? '<span class="label label-danger">' . $getError->WBB_getError ( 'check_credit_card_number' ) . '</span>' : ''; ?>
+	  <input type="text" class="form-control  bottom-text-element" name="check_credit_card_number"
+		   placeholder="valid credit card number format">
 	  </p>
 
 	  <p>

@@ -32,28 +32,32 @@ class WBB_Form_Validation_Class
      * @var
      */
     protected $WBB_default_error_messages = array (
-	  'required'           => '%s is required.' ,
-	  'min_length'         => '%s must be at least  %d characters or longer.' ,
-	  'max_length'         => '%s must be no longer than %d characters.' ,
-	  'valid_url'          => '%s is an invalid url.' ,
-	  'regex_match'        => '%s is an invalid data format.' ,
-	  'matches'            => '%s must match %s .' ,
-	  'exact_length'       => '%s must be exactly %d characters in length.' ,
-	  'valid_email'        => '%s is an invalid email address.' ,
-	  'valid_ip'           => '%s is an invalid IP format.' ,
-	  'alpha'              => '%s is an invalid alpha format.' ,
-	  'alpha_numeric'      => '%s is an invalid alpha-numeric format.' ,
-	  'alpha_dash'         => '%s %s is an invalid alpha-dash format.' ,
-	  'numeric'            => '%s is an invalid numeric format.' ,
-	  'is_numeric'         => '%s is not numeric.' ,
-	  'integer'            => '%s must consist of integer value.' ,
-	  'decimal'            => '%s must consist of decimal value.' ,
-	  'greater_than'       => '%s must be greater than %d .' ,
-	  'less_than'          => '%s must be less than %d .' ,
-	  'is_natural'         => '%s is not natural.' ,
-	  'is_natural_no_zero' => '%s is a Natural number, but not a zero  (1,2,3, etc.)' ,
-	  'valid_base64'       => '%s is invalid base 64 data' ,
-	  'word_limit'         => '%s must be no longer than %d words.' ,
+	  'required'                  => '%s is required.' ,
+	  'min_length'                => '%s must be at least  %d characters or longer.' ,
+	  'max_length'                => '%s must be no longer than %d characters.' ,
+	  'valid_url'                 => '%s is an invalid url.' ,
+	  'real_url'                  => '%s must be a real url' ,
+	  'regex_match'               => '%s is an invalid data format.' ,
+	  'matches'                   => '%s must match %s .' ,
+	  'exact_length'              => '%s must be exactly %d characters in length.' ,
+	  'valid_email'               => '%s is an invalid email address.' ,
+	  'valid_ip'                  => '%s is an invalid IP format.' ,
+	  'alpha'                     => '%s is an invalid alpha format.' ,
+	  'alpha_numeric'             => '%s is an invalid alpha-numeric format.' ,
+	  'alpha_dash'                => '%s %s is an invalid alpha-dash format.' ,
+	  'numeric'                   => '%s is an invalid numeric format.' ,
+	  'is_numeric'                => '%s is not numeric.' ,
+	  'integer'                   => '%s must consist of integer value.' ,
+	  'decimal'                   => '%s must consist of decimal value.' ,
+	  'greater_than'              => '%s must be greater than %d .' ,
+	  'less_than'                 => '%s must be less than %d .' ,
+	  'is_natural'                => '%s is not natural.' ,
+	  'is_natural_no_zero'        => '%s is a Natural number, but not a zero  (1,2,3, etc.)' ,
+	  'valid_base64'              => '%s is invalid base 64 data' ,
+	  'word_limit'                => '%s must be no longer than %d words.' ,
+	  'ccnum'                     => '%s has to be a valid credit card number format' ,
+	  'between'                   => '%s must be number between %d and %d.' ,
+	  'valid_date'                => '%s must be a valid date' ,
     );
 
 
@@ -170,11 +174,11 @@ class WBB_Form_Validation_Class
      * @param bool $label
      * @param bool $label_nr
      */
-    protected function WBB_registerError ( $key , $error_tag , $label = FALSE , $label_nr = FALSE )
+    protected function WBB_registerError ( $key , $error_tag , $label = FALSE , $label_nr = FALSE , $label_nr2 = FALSE )
     {
 
 	  $WBB_error_messages       = $this->WBB_default_error_messages;
-	  $this->WBB_errors[ $key ] = sprintf ( $WBB_error_messages[ $error_tag ] , $label , $label_nr );
+	  $this->WBB_errors[ $key ] = sprintf ( $WBB_error_messages[ $error_tag ] , $label , $label_nr , $label_nr2 );
     }
 
 
@@ -290,6 +294,30 @@ class WBB_Form_Validation_Class
 		    $this->WBB_registerError ( $field , $rule_key , $label );
 		}
 	  }
+    }
+    // --------------------------------------------------------------------
+
+    /**
+     * Check for a real URL
+     *
+     * @param $rule_key
+     * @param $rule
+     * @param $field
+     * @param $str
+     * @param $label
+     */
+    private function __real_url ( $rule_key , $rule , $field , $str , $label )
+    {
+
+	  if ( $rule )
+	  {
+		if ( @fsockopen ( "$str" , 80 , $errno , $errstr , 30 ) == FALSE )
+		{
+		    $this->WBB_registerError ( $field , $rule_key , $label );
+		}
+	  }
+
+
     }
 
     // --------------------------------------------------------------------
@@ -759,6 +787,91 @@ class WBB_Form_Validation_Class
 	  }
 
 	  return;
+    }
+
+
+    // -------------------------------------------------------------------- // --------------------------------------------------------------------
+
+    /**
+     * Field must be a valid credit card number format
+     * CC types: Visa,MasterCard, Discover , American Express,Diner's Club, JCB
+     *
+     * @param $rule_key
+     * @param $rule
+     * @param $field
+     * @param $str
+     * @param $label
+     *
+     * @return bool
+     */
+    private function __ccnum ( $rule_key , $rule , $field , $str , $label )
+    {
+
+	  if ( $rule )
+	  {
+		if ( ! (bool) preg_match ( '/^(?:4\d{3}[ -]*\d{4}[ -]*\d{4}[ -]*\d(?:\d{3})?|5[1-5]\d{2}[ -]*\d{4}[ -]*\d{4}[ -]*\d{4}|6(?:011|5[0-9]{2})[ -]*\d{4}[ -]*\d{4}[ -]*\d{4}|3[47]\d{2}[ -]*\d{6}[ -]*\d{5}|3(?:0[0-5]|[68][0-9])\d[ -]*\d{6}[ -]*\d{4}|(?:2131|1800)[ -]*\d{6}[ -]*\d{5}|35\d{2}[ -]*\d{4}[ -]*\d{4}[ -]*\d{4})$/' , $str ) )
+		{
+		    $this->WBB_registerError ( $field , $rule_key , $label );
+		}
+	  }
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Field must be number between X and Y.
+     *
+     * @param $rule_key
+     * @param $rule
+     * @param $field
+     * @param $str
+     * @param $label
+     *
+     * @return bool
+     */
+    private function __between ( $rule_key , $rule , $field , $str , $label )
+    {
+
+	  if ( $rule )
+	  {
+		if ( is_array ( $rule ) )
+		{
+		    $betwee_val = $rule;
+		}
+		else
+		{
+		    $betwee_val = explode ( ',' , $rule );
+		}
+		if ( in_array ( $str , call_user_func_array ( "range" , $betwee_val ) ) == FALSE || ! is_numeric ( $str ) )
+		{
+		    $this->WBB_registerError ( $field , $rule_key , $label , $betwee_val[ 0 ] , $betwee_val[ 1 ] );
+		}
+	  }
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Field must be valid date.
+     *
+     * @param $rule_key
+     * @param $rule
+     * @param $field
+     * @param $str
+     * @param $label
+     *
+     * @return bool
+     */
+    private function __valid_date ( $rule_key , $rule , $field , $str , $label )
+    {
+
+	  if ( $rule )
+	  {
+		if ( strtotime ( $str ) == FALSE )
+		{
+		    $this->WBB_registerError ( $field , $rule_key , $label );
+		}
+	  }
     }
 
     // --------------------------------------------------------------------
