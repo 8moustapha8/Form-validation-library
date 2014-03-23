@@ -188,17 +188,17 @@ $form_validation_config = array (
 		)
 	  ) ,
 	  array (
-		'field' => 'check_between_numbers' ,
+		'field' => 'check_valid_date' ,
 		'label' => 'Element25' ,
 		'rules' => array (
-		    'between' => array ( 12 , 31 ) , //we can use instead array(12,31) as "12,31" string format also
+		    'valid_date' => TRUE ,
 		)
 	  ) ,
 	  array (
-		'field' => 'check_valid_date' ,
+		'field' => 'check_credit_card_number' ,
 		'label' => 'Element26' ,
 		'rules' => array (
-		    'valid_date' => TRUE ,
+		    'ccnum' => TRUE ,
 		)
 	  ) ,
     ) ,

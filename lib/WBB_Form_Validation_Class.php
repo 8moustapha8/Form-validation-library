@@ -58,6 +58,23 @@ class WBB_Form_Validation_Class
 	  'ccnum'                     => '%s has to be a valid credit card number format' ,
 	  'between'                   => '%s must be number between %d and %d.' ,
 	  'valid_date'                => '%s must be a valid date' ,
+	  ''                          => '---------------TODO:---------------------------------' ,
+	  'between_length'            => '%s must be between min length %d and  max length %d.' ,
+	  'not_matches'               => '%s is different from %s' ,
+	  'start_with'                => '%s must start with %s' ,
+	  'not_start_with'            => '%s must not start with %s' ,
+	  'ends_with'                 => '%s must end with %s' ,
+	  'not_ends_with'             => '%s must not end with %s' ,
+	  'min_date'                  => '%s must be a date lather then or equal to %s' ,
+	  'max_date'                  => '%s must be a date lather then or equal to %s' ,
+	  'one_of'                    => '%s has to be one of the allowed ones %s' ,
+	  'callback'                  => '%s' ,
+	  'valid_emails'              => '%s has to be valid emails' ,
+	  'prep_for_form'             => '' ,
+	  'prep_url'                  => '' ,
+	  'strip_image_tags'          => '' ,
+	  'strip_image_tagsxss_clean' => '' ,
+	  'encode_php_tags'           => '' ,
     );
 
 
@@ -118,9 +135,7 @@ class WBB_Form_Validation_Class
 	  {
 		if ( $form_rule[ 'field' ] == $WBB_form_element_name )
 		{
-		    $exact_form_array                                                = $this->WBB_form_rules[ $WBB_form_tag ][ $element_nr ][ 'rules' ];
-		    $array_merge                                                     = array_merge ( $exact_form_array , $WBB_form_element_rule );
-		    $this->WBB_form_rules[ $WBB_form_tag ][ $element_nr ][ 'rules' ] = $array_merge;
+		    $this->WBB_form_rules[ $WBB_form_tag ][ $element_nr ][ 'rules' ] = array_merge ( $this->WBB_form_rules[ $WBB_form_tag ][ $element_nr ][ 'rules' ] , $WBB_form_element_rule );;
 		}
 	  }
     }
