@@ -330,8 +330,6 @@ class WBB_Form_Validation_Class
 		    $this->WBB_registerError ( $field , $rule_key , $label );
 		}
 	  }
-
-
     }
 
     // --------------------------------------------------------------------
@@ -724,7 +722,7 @@ class WBB_Form_Validation_Class
     private function __less_than ( $rule_key , $rule , $field , $str , $label )
     {
 
-	  if ( ! is_numeric ( $str ) && $str < $rule )
+	  if ( ! is_numeric ( $str ) || ( $str > $rule ) )
 	  {
 		$this->WBB_registerError ( $field , $rule_key , $label , $rule );
 	  }
