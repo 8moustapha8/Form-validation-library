@@ -216,6 +216,7 @@ $form_validation_config = array (
 		'label' => 'Element2' ,
 		'rules' => array (
 		    'required' => TRUE ,
+		    'prep_url' => TRUE ,
 
 
 		)

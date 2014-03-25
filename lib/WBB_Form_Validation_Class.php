@@ -58,6 +58,7 @@ class WBB_Form_Validation_Class
 	  'ccnum'                     => '%s has to be a valid credit card number format' ,
 	  'between'                   => '%s must be number between %d and %d.' ,
 	  'valid_date'                => '%s must be a valid date' ,
+	  'prep_url'                  => '' ,
 	  ''                          => '---------------TODO:---------------------------------' ,
 	  'between_length'            => '%s must be between min length %d and  max length %d.' ,
 	  'not_matches'               => '%s is different from %s' ,
@@ -71,7 +72,6 @@ class WBB_Form_Validation_Class
 	  'callback'                  => '%s' ,
 	  'valid_emails'              => '%s has to be valid emails' ,
 	  'prep_for_form'             => '' ,
-	  'prep_url'                  => '' ,
 	  'strip_image_tags'          => '' ,
 	  'strip_image_tagsxss_clean' => '' ,
 	  'encode_php_tags'           => '' ,
@@ -861,7 +861,12 @@ class WBB_Form_Validation_Class
 	  }
     }
 
-    // --------------------------------------------------------------------
+
+    private function __xss_clean ( $rule_key , $rule , $field , $str , $label )
+    {
+
+    }
+
 
     /**
      * Field must be valid date.
@@ -887,5 +892,27 @@ class WBB_Form_Validation_Class
     }
 
     // --------------------------------------------------------------------
+    /**
+     * Add "http://" or "https://"  to the field
+     *
+     * @param $rule_key
+     * @param $rule
+     * @param $field
+     * @param $str
+     * @param $label
+     */
+    public function __prep_url ( $rule_key , $rule , $field , $str , $label = NULL )
+    {
+
+	  if ( $rule && $rule_key == 'prep_url' )
+	  {
+		if ( substr ( $str , 0 , 7 ) != 'http://' && substr ( $str , 0 , 8 ) != 'https://' )
+		{
+		    $str = 'http://' . $str;
+		}
+
+		$_POST[ $field ] = $str;
+	  }
+    }
 
 }
