@@ -60,6 +60,7 @@ class WBB_Form_Validation_Class
 	  'valid_date'                => '%s must be a valid date' ,
 	  'prep_url'                  => '' ,
 	  'encode_php_tags'           => '' ,
+	  'prep_for_form'             => '' ,
 	  ''                          => '---------------TODO:---------------------------------' ,
 	  'between_length'            => '%s must be between min length %d and  max length %d.' ,
 	  'not_matches'               => '%s is different from %s' ,
@@ -72,7 +73,7 @@ class WBB_Form_Validation_Class
 	  'one_of'                    => '%s has to be one of the allowed ones %s' ,
 	  'callback'                  => '%s' ,
 	  'valid_emails'              => '%s has to be valid emails' ,
-	  'prep_for_form'             => '' ,
+
 	  'strip_image_tags'          => '' ,
 	  'strip_image_tagsxss_clean' => '' ,
 
@@ -902,7 +903,7 @@ class WBB_Form_Validation_Class
      * @param $str
      * @param $label
      */
-    public function __prep_url ( $rule_key , $rule , $field , $str , $label = NULL )
+    private function __prep_url ( $rule_key , $rule , $field , $str , $label = NULL )
     {
 
 	  if ( $rule && $rule_key == 'prep_url' )
@@ -928,7 +929,7 @@ class WBB_Form_Validation_Class
      *
      * @return mixed.
      */
-    public function __encode_php_tags ( $rule_key , $rule , $field , $str , $label = NULL )
+    private function __encode_php_tags ( $rule_key , $rule , $field , $str , $label = NULL )
     {
 
 	  if ( $rule && $rule_key == 'encode_php_tags' )
@@ -948,5 +949,36 @@ class WBB_Form_Validation_Class
 
     }
 
+    // --------------------------------------------------------------------
+
+    /**
+     * Prep data for form
+     * This function allows HTML to be safely shown in a form.
+     * Special characters are converted.
+     *
+     * @param      $rule_key
+     * @param      $rule
+     * @param      $field
+     * @param      $str
+     * @param null $label
+     */
+    private function __prep_for_form ( $rule_key , $rule , $field , $str , $label = NULL )
+    {
+
+	  if ( $rule && $rule_key == 'prep_for_form' )
+	  {
+		$_POST[ $field ] = str_replace ( array (
+								 "'" ,
+								 '"' ,
+								 '<' ,
+								 '>'
+							   ) , array (
+								 "&#39;" ,
+								 "&quot;" ,
+								 '&lt;' ,
+								 '&gt;'
+							   ) , stripslashes ( $str ) );
+	  }
+    }
 
 }
