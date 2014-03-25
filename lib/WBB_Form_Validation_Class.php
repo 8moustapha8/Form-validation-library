@@ -76,6 +76,11 @@ class WBB_Form_Validation_Class
 	  'valid_emails'              => '%s has to be valid emails' ,
 	  'strip_image_tags'          => '' ,
 	  'strip_image_tagsxss_clean' => '' ,
+	  'sanitize_file'             => '' ,
+	  'slugify'                   => '' ,
+	  'allowed_file_types'        => '%s is invalid file type.' ,
+	  'valid_zip'                 => '%s is invalid ZIP format.' ,
+	  'valid_phone'               => '%s is invalid phone format number.' ,
 
     );
 
