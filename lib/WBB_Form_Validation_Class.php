@@ -59,6 +59,7 @@ class WBB_Form_Validation_Class
 	  'between'                   => '%s must be number between %d and %d.' ,
 	  'valid_date'                => '%s must be a valid date' ,
 	  'prep_url'                  => '' ,
+	  'encode_php_tags'           => '' ,
 	  ''                          => '---------------TODO:---------------------------------' ,
 	  'between_length'            => '%s must be between min length %d and  max length %d.' ,
 	  'not_matches'               => '%s is different from %s' ,
@@ -74,7 +75,7 @@ class WBB_Form_Validation_Class
 	  'prep_for_form'             => '' ,
 	  'strip_image_tags'          => '' ,
 	  'strip_image_tagsxss_clean' => '' ,
-	  'encode_php_tags'           => '' ,
+
     );
 
 
@@ -914,5 +915,38 @@ class WBB_Form_Validation_Class
 		$_POST[ $field ] = $str;
 	  }
     }
+    // --------------------------------------------------------------------
+
+    /**
+     * Convert PHP tags to entities
+     *
+     * @param      $rule_key
+     * @param      $rule
+     * @param      $field
+     * @param      $str
+     * @param null $label
+     *
+     * @return mixed.
+     */
+    public function __encode_php_tags ( $rule_key , $rule , $field , $str , $label = NULL )
+    {
+
+	  if ( $rule && $rule_key == 'encode_php_tags' )
+	  {
+		$_POST[ $field ] = str_replace ( array (
+								 '<?php' ,
+								 '<?PHP' ,
+								 '<?' ,
+								 '?>'
+							   ) , array (
+								 '&lt;?php' ,
+								 '&lt;?PHP' ,
+								 '&lt;?' ,
+								 '?&gt;'
+							   ) , $str );
+	  }
+
+    }
+
 
 }
