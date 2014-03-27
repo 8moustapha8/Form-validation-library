@@ -39,6 +39,7 @@ class WBB_Form_Validation_Class
 	  'real_url'                  => '%s must be a real url' ,
 	  'regex_match'               => '%s is an invalid data format.' ,
 	  'matches'                   => '%s must match %s .' ,
+	  'not_matches'               => '%s must not match with %s' ,
 	  'exact_length'              => '%s must be exactly %d characters in length.' ,
 	  'valid_email'               => '%s is an invalid email address.' ,
 	  'valid_ip'                  => '%s is an invalid IP format.' ,
@@ -64,7 +65,6 @@ class WBB_Form_Validation_Class
 	  'xss_clean'                 => '' ,
 	  ''                          => '---------------TODO:---------------------------------' ,
 	  'between_length'            => '%s must be between min length %d and  max length %d.' ,
-	  'not_matches'               => '%s is different from %s' ,
 	  'start_with'                => '%s must start with %s' ,
 	  'not_start_with'            => '%s must not start with %s' ,
 	  'ends_with'                 => '%s must end with %s' ,
@@ -76,7 +76,7 @@ class WBB_Form_Validation_Class
 	  'valid_emails'              => '%s has to be valid emails' ,
 	  'strip_image_tags'          => '' ,
 	  'strip_image_tagsxss_clean' => '' ,
-	  'sanitize_file'             => '' ,
+	  'sanitize_file_name'        => '' ,
 	  'slugify'                   => '' ,
 	  'allowed_file_types'        => '%s is invalid file type.' ,
 	  'valid_zip'                 => '%s is invalid ZIP format.' ,
@@ -410,6 +410,42 @@ class WBB_Form_Validation_Class
 	  {
 		//
 		if ( $str !== $_POST[ $rule ] )
+		{
+		    $other_field = FALSE;
+		    foreach ( $this->WBB_form_rule as $form_rule )
+		    {
+
+			  if ( $form_rule[ 'field' ] == $rule )
+			  {
+				if ( isset( $form_rule[ 'label' ] ) )
+				{
+				    $other_field = $form_rule[ 'label' ];
+				}
+			  }
+		    }
+
+		    $this->WBB_registerError ( $field , $rule_key , $label , $other_field );
+		}
+	  }
+    }
+    // --------------------------------------------------------------------
+
+    /**
+     * Match one field to another
+     *
+     * @param $rule_key
+     * @param $rule
+     * @param $field
+     * @param $str
+     * @param $label
+     */
+    private function __not_matches ( $rule_key , $rule , $field , $str , $label )
+    {
+
+	  if ( isset( $_POST[ $field ] ) )
+	  {
+		//
+		if ( $str == $_POST[ $rule ] )
 		{
 		    $other_field = FALSE;
 		    foreach ( $this->WBB_form_rule as $form_rule )
