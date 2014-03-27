@@ -59,6 +59,7 @@ class WBB_Form_Validation_Class
 	  'ccnum'                     => '%s has to be a valid credit card number format' ,
 	  'between'                   => '%s must be number between %d and %d.' ,
 	  'valid_date'                => '%s must be a valid date' ,
+	  'allowed_file_types'        => '%s is invalid file type.' ,
 	  'prep_url'                  => '' ,
 	  'encode_php_tags'           => '' ,
 	  'prep_for_form'             => '' ,
@@ -78,7 +79,6 @@ class WBB_Form_Validation_Class
 	  'strip_image_tagsxss_clean' => '' ,
 	  'sanitize_file_name'        => '' ,
 	  'slugify'                   => '' ,
-	  'allowed_file_types'        => '%s is invalid file type.' ,
 	  'valid_zip'                 => '%s is invalid ZIP format.' ,
 	  'valid_phone'               => '%s is invalid phone format number.' ,
 
@@ -226,10 +226,11 @@ class WBB_Form_Validation_Class
     private function WBB_formExecute ( $data )
     {
 
-	  $post = isset( $_POST ) && ( ! empty( $_POST ) ) ? $_POST : NULL;
+	  $post  = isset( $_POST ) && ( ! empty( $_POST ) ) ? $_POST : NULL;
+	  $files = isset( $_FILES ) && ( ! empty( $_FILES ) ) ? $_FILES : NULL;
 
 	  //Check if form method is post
-	  if ( $post )
+	  if ( $post || $files )
 	  {
 
 		if ( isset( $this->WBB_form_rules[ $data ] ) )
@@ -243,9 +244,10 @@ class WBB_Form_Validation_Class
 			  $label       = isset( $form_rule[ 'label' ] ) ? $form_rule[ 'label' ] : FALSE;
 			  $rules       = isset( $form_rule[ 'rules' ] ) ? $form_rule[ 'rules' ] : FALSE;
 			  $field_value = isset( $post[ $field ] ) ? $post[ $field ] : FALSE;
+			  $files_value = isset( $files[ $field ] ) ? $files[ $field ] : FALSE;
 
 			  //Check If Field Element exist in the form
-			  if ( isset( $post[ $field ] ) )
+			  if ( isset( $post[ $field ] ) || isset( $files[ $field ] ) )
 			  {
 
 				if ( $rules )
@@ -253,6 +255,15 @@ class WBB_Form_Validation_Class
 				    //Go Trough each Rule
 				    foreach ( $rules as $rule_key => $rule )
 				    {
+					  $field_data_value = FALSE;
+					  if ( $field_value )
+					  {
+						$field_data_value = $field_value;
+					  }
+					  elseif ( $files_value )
+					  {
+						$field_data_value = $files_value;
+					  }
 					  call_user_func_array ( array (
 									     $this ,
 									     '__' . $rule_key //Callback Function Rule
@@ -260,7 +271,7 @@ class WBB_Form_Validation_Class
 									     $rule_key , //Rule Tag
 									     $rule , //Rule Value
 									     $field , //Field Name
-									     $field_value , //Field Value
+									     $field_data_value , //Field Value
 									     $label //Field Label
 									 ) );
 				    }
@@ -356,13 +367,21 @@ class WBB_Form_Validation_Class
 
 	  if ( $rule )
 	  {
-		if ( ! is_array ( $str ) )
+		//Check For Required File
+		if ( isset( $_FILES[ $field ] ) )
 		{
-		    $return = ( trim ( $str ) == '' ) ? FALSE : TRUE;
+		    $return = ( ! empty( $str[ 'name' ] ) );
 		}
 		else
 		{
-		    $return = ( ! empty( $str ) );
+		    if ( ! is_array ( $str ) )
+		    {
+			  $return = ( trim ( $str ) == '' ) ? FALSE : TRUE;
+		    }
+		    else
+		    {
+			  $return = ( ! empty( $str ) );
+		    }
 		}
 
 		if ( $return == FALSE )
@@ -1035,6 +1054,23 @@ class WBB_Form_Validation_Class
 								 '&lt;?' ,
 								 '?&gt;'
 							   ) , $str );
+	  }
+
+    }
+
+
+    // --------------------------------------------------------------------
+    private function __allowed_file_types ( $rule_key , $rule , $field , $str = NULL , $label )
+    {
+
+	  if ( isset( $_FILES[ $field ] ) && ( ! empty( $_FILES[ $field ][ 'name' ] ) ) )
+	  {
+		$file_input_data = $_FILES[ $field ];
+
+		if ( ! in_array ( $file_input_data[ 'type' ] , $rule ) )
+		{
+		    $this->WBB_registerError ( $field , $rule_key , $label );
+		}
 	  }
 
     }

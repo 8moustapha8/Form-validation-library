@@ -221,6 +221,18 @@ $form_validation_config = array (
 
 		)
 	  ) ,
+	  array (
+		'field' => 'check_file_type' ,
+		'label' => 'File' ,
+		'rules' => array (
+		    'allowed_file_types' => array (
+			  'text/html' ,
+			  'image/gif' ,
+			  'application/pdf' ,
+		    ) ,
+		    'required'           => TRUE
+		)
+	  ) ,
 
 
     )

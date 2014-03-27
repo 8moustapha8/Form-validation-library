@@ -33,7 +33,7 @@
     <?php include ( "lib/functions.php" ); ?>
 
 
-    <form id="form1" name="form1" class="form-signin col-lg-7" role="form" method="post">
+    <form id="form1" name="form1" class="form-signin col-lg-7" role="form" method="post" enctype="multipart/form-data">
 
 	  <p>
 
@@ -134,7 +134,7 @@
     </form>
 
 
-    <form id="form2" name="form2" class="form-signin col-lg-7" role="form" method="post">
+    <form id="form2" name="form2" class="form-signin col-lg-7" role="form" method="post" enctype="multipart/form-data">
 
 	  <p>
 
@@ -149,6 +149,23 @@
 	  <?php echo $getError->WBB_getError ( 'check_word_limit2' ) ? '<span class="label label-danger">' . $getError->WBB_getError ( 'check_word_limit2' ) . '</span>' : ''; ?>
 	  <input type="text" class="form-control bottom-text-element" name="check_word_limit2"
 		   placeholder="Check words limit">
+
+	  <?php
+
+	  if(isset($_POST['form2_submit']))
+	  {
+
+		if ( isset( $_FILES[ 'check_file_type' ] ) )
+		{
+		    print_r($_FILES['check_file_type']) ;
+		}
+	  }
+
+	  ?>
+
+
+	  <?php echo $getError->WBB_getError ( 'check_file_type' ) ? '<span class="label label-danger">' . $getError->WBB_getError ( 'check_file_type' ) . '</span>' : ''; ?>
+	  <input type="file" name="check_file_type" value="s">
 
 	  </p>
 
