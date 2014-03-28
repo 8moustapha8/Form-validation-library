@@ -1190,6 +1190,7 @@ class WBB_Form_Validation_Class
 
     /**
      * ZIP Validation for 12 countries it can be added as multiple countries : array("UK", "NL", "CA") or single : "NL"
+     * @see  http://www.pixelenvision.com/1708/zip-postal-code-validation-regex-php-code-for-12-countries/
      *
      * @param      $rule_key
      * @param      $rule
