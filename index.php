@@ -150,20 +150,6 @@
 	  <input type="text" class="form-control bottom-text-element" name="check_word_limit2"
 		   placeholder="Check words limit">
 
-	  <?php
-
-	  if(isset($_POST['form2_submit']))
-	  {
-
-		if ( isset( $_FILES[ 'check_file_type' ] ) )
-		{
-		    print_r($_FILES['check_file_type']) ;
-		}
-	  }
-
-	  ?>
-
-
 	  <?php echo $getError->WBB_getError ( 'check_file_type' ) ? '<span class="label label-danger">' . $getError->WBB_getError ( 'check_file_type' ) . '</span>' : ''; ?>
 	  <input type="file" name="check_file_type" value="s">
 
