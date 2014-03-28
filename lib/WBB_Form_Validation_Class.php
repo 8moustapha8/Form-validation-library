@@ -62,6 +62,7 @@ class WBB_Form_Validation_Class
 	  'between'                   => '%s must be number between %d and %d.' ,
 	  'valid_date'                => '%s must be a valid date' ,
 	  'allowed_file_types'        => '%s is invalid file type.' ,
+	  'one_of'                    => '%s has to be one of the allowed ones : %s' ,
 	  'prep_url'                  => '' ,
 	  'encode_php_tags'           => '' ,
 	  'prep_for_form'             => '' ,
@@ -73,7 +74,6 @@ class WBB_Form_Validation_Class
 	  'not_ends_with'             => '%s must not end with %s' ,
 	  'min_date'                  => '%s must be a date lather then or equal to %s' ,
 	  'max_date'                  => '%s must be a date lather then or equal to %s' ,
-	  'one_of'                    => '%s has to be one of the allowed ones %s' ,
 	  'callback'                  => '%s' ,
 	  'valid_emails'              => '%s has to be valid emails' ,
 	  'strip_image_tags'          => '' ,
@@ -1108,6 +1108,15 @@ class WBB_Form_Validation_Class
 
 
     // --------------------------------------------------------------------
+    /**
+     * Allowed file types
+     *
+     * @param      $rule_key
+     * @param      $rule
+     * @param      $field
+     * @param null $str
+     * @param      $label
+     */
     private function __allowed_file_types ( $rule_key , $rule , $field , $str = NULL , $label )
     {
 
@@ -1119,6 +1128,29 @@ class WBB_Form_Validation_Class
 		{
 		    $this->WBB_registerError ( $field , $rule_key , $label );
 		}
+	  }
+
+    }
+
+    // --------------------------------------------------------------------// --------------------------------------------------------------------
+    /**
+     * Check if string is one of the rule array or rule string ("val1, val2, val3") or array("val1","val2", "val3")
+     *
+     * @param      $rule_key
+     * @param      $rule
+     * @param      $field
+     * @param null $str
+     * @param      $label
+     */
+    private function __one_of ( $rule_key , $rule , $field , $str = NULL , $label )
+    {
+
+	  $allowed_ones   = is_array ( $rule ) ? implode ( ',' , $rule ) : $rule;
+	  $check_if_is_in = is_array ( $rule ) ? $rule : explode ( ',' , $rule );
+
+	  if ( ! in_array ( $str , $check_if_is_in ) )
+	  {
+		$this->WBB_registerError ( $field , $rule_key , $label , $allowed_ones );
 	  }
 
     }
