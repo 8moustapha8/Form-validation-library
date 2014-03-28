@@ -63,6 +63,7 @@ class WBB_Form_Validation_Class
 	  'valid_date'                => '%s must be a valid date' ,
 	  'allowed_file_types'        => '%s is invalid file type.' ,
 	  'one_of'                    => '%s has to be one of the allowed ones : %s' ,
+	  'valid_zip'                 => '%s is invalid ZIP format.' ,
 	  'prep_url'                  => '' ,
 	  'encode_php_tags'           => '' ,
 	  'prep_for_form'             => '' ,
@@ -80,7 +81,6 @@ class WBB_Form_Validation_Class
 	  'strip_image_tagsxss_clean' => '' ,
 	  'sanitize_file_name'        => '' ,
 	  'slugify'                   => '' ,
-	  'valid_zip'                 => '%s is invalid ZIP format.' ,
 	  'valid_phone'               => '%s is invalid phone format number.' ,
 
     );
@@ -1185,6 +1185,62 @@ class WBB_Form_Validation_Class
 								 '&gt;'
 							   ) , stripslashes ( $str ) );
 	  }
+    }
+    // --------------------------------------------------------------------
+
+    /**
+     * ZIP Validation for 12 countries it can be added as multiple countries : array("UK", "NL", "CA") or single : "NL"
+     *
+     * @param      $rule_key
+     * @param      $rule
+     * @param      $field
+     * @param      $str
+     * @param null $label
+     */
+    private function __valid_zip ( $rule_key , $rule , $field , $str , $label = NULL )
+    {
+
+	  $ZIPREG = array (
+		"US" => "^\d{5}([\-]?\d{4})?$" ,
+		"UK" => "^(GIR|[A-Z]\d[A-Z\d]??|[A-Z]{2}\d[A-Z\d]??)[ ]??(\d[A-Z]{2})$" ,
+		"DE" => "\b((?:0[1-46-9]\d{3})|(?:[1-357-9]\d{4})|(?:[4][0-24-9]\d{3})|(?:[6][013-9]\d{3}))\b" ,
+		"CA" => "^([ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ])\ {0,1}(\d[ABCEGHJKLMNPRSTVWXYZ]\d)$" ,
+		"FR" => "^(F-)?((2[A|B])|[0-9]{2})[0-9]{3}$" ,
+		"IT" => "^(V-|I-)?[0-9]{5}$" ,
+		"AU" => "^(0[289][0-9]{2})|([1345689][0-9]{3})|(2[0-8][0-9]{2})|(290[0-9])|(291[0-4])|(7[0-4][0-9]{2})|(7[8-9][0-9]{2})$" ,
+		"NL" => "^[1-9][0-9]{3}\s?([a-zA-Z]{2})?$" ,
+		"ES" => "^([1-9]{2}|[0-9][1-9]|[1-9][0-9])[0-9]{3}$" ,
+		"DK" => "^([D-d][K-k])?( |-)?[1-9]{1}[0-9]{3}$" ,
+		"SE" => "^(s-|S-){0,1}[0-9]{3}\s?[0-9]{2}$" ,
+		"BE" => "^[1-9]{1}[0-9]{3}$"
+	  );
+
+	  if ( is_array ( $rule ) )
+	  {
+		$true = array ();
+		foreach ( $rule as $r )
+		{
+		    if ( preg_match ( "/" . $ZIPREG[ $r ] . "/i" , $str ) )
+		    {
+			  $true[ ] = TRUE;
+		    }
+		}
+
+		if ( ! in_array ( TRUE , $true ) )
+		{
+		    $this->WBB_registerError ( $field , $rule_key , $label );
+		}
+
+	  }
+	  else
+	  {
+		if ( ! preg_match ( "/" . $ZIPREG[ $rule ] . "/i" , $str ) )
+		{
+		    //Validation failed, provided zip/postal code is not valid.
+		    $this->WBB_registerError ( $field , $rule_key , $label );
+		}
+	  }
+
     }
 
 }

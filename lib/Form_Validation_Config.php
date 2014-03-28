@@ -217,8 +217,6 @@ $form_validation_config = array (
 		'rules' => array (
 		    'required' => TRUE ,
 		    'prep_url' => TRUE ,
-
-
 		)
 	  ) ,
 	  array (
