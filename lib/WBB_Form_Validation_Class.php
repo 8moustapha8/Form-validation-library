@@ -33,8 +33,10 @@ class WBB_Form_Validation_Class
      */
     protected $WBB_default_error_messages = array (
 	  'required'                  => '%s is required.' ,
-	  'min_length'                => '%s must be at least  %d characters or longer.' ,
+	  'min_length'                => '%s must be at least %d characters or longer.' ,
 	  'max_length'                => '%s must be no longer than %d characters.' ,
+	  'str_between_length'        => '%s must be between min length %d and  max length %d.' ,
+	  'num_between_length'        => '%s must be between %d and length %d.' ,
 	  'valid_url'                 => '%s is an invalid url.' ,
 	  'real_url'                  => '%s must be a real url' ,
 	  'regex_match'               => '%s is an invalid data format.' ,
@@ -65,7 +67,6 @@ class WBB_Form_Validation_Class
 	  'prep_for_form'             => '' ,
 	  'xss_clean'                 => '' ,
 	  ''                          => '---------------TODO:---------------------------------' ,
-	  'between_length'            => '%s must be between min length %d and  max length %d.' ,
 	  'start_with'                => '%s must start with %s' ,
 	  'not_start_with'            => '%s must not start with %s' ,
 	  'ends_with'                 => '%s must end with %s' ,
@@ -524,6 +525,53 @@ class WBB_Form_Validation_Class
 	  {
 		$this->WBB_registerError ( $field , $rule_key , $label , $rule );
 	  }
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * String Between Length
+     *
+     * @param $rule_key
+     * @param $rule
+     * @param $field
+     * @param $str
+     * @param $label
+     */
+    private function __str_between_length ( $rule_key , $rule , $field , $str , $label )
+    {
+
+	  $check_between = isset( $rule[ 'min' ] ) && $rule[ 'max' ] && ( ( mb_strlen ( $str ) >= $rule[ 'min' ] && mb_strlen ( $str ) <= $rule[ 'max' ] ) );
+	  if ( ! $check_between )
+	  {
+		$this->WBB_registerError ( $field , $rule_key , $label , $rule[ 'min' ] , $rule[ 'max' ] );
+	  }
+    }
+
+    // --------------------------------------------------------------------
+    /**
+     * Number Between x, y
+     *
+     * @param $rule_key
+     * @param $rule
+     * @param $field
+     * @param $str
+     * @param $label
+     */
+    private function __num_between_length ( $rule_key , $rule , $field , $str , $label )
+    {
+
+	  $check_between = FALSE;
+	  if ( preg_match ( '/^[\-+]?[0-9]*\.?[0-9]+$/' , $str ) )
+	  {
+		$check_between = isset( $rule[ 'min' ] ) && isset( $rule[ 'max' ] ) && $str >= $rule[ 'min' ] && $str <= $rule[ 'max' ];
+	  }
+
+	  if ( ! $check_between )
+	  {
+		$this->WBB_registerError ( $field , $rule_key , $label , $rule[ 'min' ] , $rule[ 'max' ] );
+	  }
+
     }
 
     // --------------------------------------------------------------------
