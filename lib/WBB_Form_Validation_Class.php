@@ -64,15 +64,15 @@ class WBB_Form_Validation_Class
 	  'allowed_file_types'        => '%s is invalid file type.' ,
 	  'one_of'                    => '%s has to be one of the allowed ones : %s' ,
 	  'valid_zip'                 => '%s is invalid ZIP format.' ,
+	  'start_with'                => '%s must start with %s' ,
+	  'not_start_with'            => '%s must not start with %s' ,
+	  'ends_with'                 => '%s must end with %s' ,
+	  'not_ends_with'             => '%s must not end with %s' ,
 	  'prep_url'                  => '' ,
 	  'encode_php_tags'           => '' ,
 	  'prep_for_form'             => '' ,
 	  'xss_clean'                 => '' ,
 	  ''                          => '---------------TODO:---------------------------------' ,
-	  'start_with'                => '%s must start with %s' ,
-	  'not_start_with'            => '%s must not start with %s' ,
-	  'ends_with'                 => '%s must end with %s' ,
-	  'not_ends_with'             => '%s must not end with %s' ,
 	  'min_date'                  => '%s must be a date lather then or equal to %s' ,
 	  'max_date'                  => '%s must be a date lather then or equal to %s' ,
 	  'callback'                  => '%s' ,
@@ -1186,8 +1186,95 @@ class WBB_Form_Validation_Class
 							   ) , stripslashes ( $str ) );
 	  }
     }
+
+
     // --------------------------------------------------------------------
 
+    /**
+     * Check if element value start with some string or number
+     *
+     * @param      $rule_key
+     * @param      $rule
+     * @param      $field
+     * @param      $str
+     * @param null $label
+     */
+    private function __start_with ( $rule_key , $rule , $field , $str , $label = NULL )
+    {
+
+	  if ( strpos ( $str , $rule ) !== 0 && ( ! empty( $str ) ) )
+	  {
+		$this->WBB_registerError ( $field , $rule_key , $label , $rule );
+	  }
+    }
+
+
+    /**
+     * Check if element value not start with some string or number
+     *
+     * @param      $rule_key
+     * @param      $rule
+     * @param      $field
+     * @param      $str
+     * @param null $label
+     */
+    private function __not_start_with ( $rule_key , $rule , $field , $str , $label = NULL )
+    {
+
+	  if ( strpos ( $str , $rule ) === 0 && ( ! empty( $str ) ) )
+	  {
+		$this->WBB_registerError ( $field , $rule_key , $label , $rule );
+	  }
+    }
+
+
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Check if element value end with some string or number
+     *
+     * @param      $rule_key
+     * @param      $rule
+     * @param      $field
+     * @param      $str
+     * @param null $label
+     */
+    private function __ends_with ( $rule_key , $rule , $field , $str , $label = NULL )
+    {
+
+	  if ( ( ! empty( $str ) ) && ( substr_compare ( $str , $rule , - strlen ( $rule ) , strlen ( $rule ) ) !== 0 ) )
+	  {
+		$this->WBB_registerError ( $field , $rule_key , $label , $rule );
+	  }
+    }
+
+
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Check if element value not end with some string or number
+     *
+     * @param      $rule_key
+     * @param      $rule
+     * @param      $field
+     * @param      $str
+     * @param null $label
+     */
+    private function __not_ends_with ( $rule_key , $rule , $field , $str , $label = NULL )
+    {
+
+	  if ( ( ! empty( $str ) ) && ( substr_compare ( $str , $rule , - strlen ( $rule ) , strlen ( $rule ) ) === 0 ) )
+	  {
+		$this->WBB_registerError ( $field , $rule_key , $label , $rule );
+	  }
+    }
+
+
+
+
+    //-----------------------------------------------------------------------
     /**
      * ZIP Validation for 12 countries it can be added as multiple countries : array("UK", "NL", "CA") or single : "NL"
      * @see  http://www.pixelenvision.com/1708/zip-postal-code-validation-regex-php-code-for-12-countries/
