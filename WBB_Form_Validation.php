@@ -85,6 +85,8 @@ class WBB_Form_Validation
 		'ccnum'                     => '%s has to be a valid credit card number format' ,
 		'between'                   => '%s must be number between %d and %d.' ,
 		'valid_date'                => '%s must be a valid date' ,
+		'min_date'                  => '%s must be a date greater then or equal to %s' ,
+		'max_date'                  => '%s must be a date later then or equal to %s' ,
 		'allowed_file_types'        => '%s is invalid file type.' ,
 		'one_of'                    => '%s has to be one of the allowed ones : %s' ,
 		'valid_zip'                 => '%s is invalid ZIP format.' ,
@@ -96,15 +98,15 @@ class WBB_Form_Validation
 		'encode_php_tags'           => '' ,
 		'prep_for_form'             => '' ,
 		'xss_clean'                 => '' ,
+		'sanitize_file_name'        => '' ,
+		'normal_chars'              => '' ,
+		'slugify'                   => '' ,
 		''                          => '---------------TODO:---------------------------------' ,
-		'min_date'                  => '%s must be a date lather then or equal to %s' ,
-		'max_date'                  => '%s must be a date lather then or equal to %s' ,
 		'callback'                  => '%s' ,
 		'valid_emails'              => '%s has to be valid emails' ,
 		'strip_image_tags'          => '' ,
 		'strip_image_tagsxss_clean' => '' ,
-		'sanitize_file_name'        => '' ,
-		'slugify'                   => '' ,
+
 		'valid_phone'               => '%s is invalid phone format number.' ,
 
 	);
@@ -254,6 +256,7 @@ class WBB_Form_Validation
 	}
 
 	//Default Form Validation Rules---------------------------------------------------------------------------------------------
+
 
 	/**
 	 * Required data works only for elements text, textarea
@@ -922,6 +925,50 @@ class WBB_Form_Validation
 	}
 
 	/**
+	 * Check minimum allowed date.
+	 *
+	 * @param array $form_data
+	 */
+	public function min_date ( $form_data = array () )
+	{
+		if ( ! empty( $form_data[ 'field_value' ] ) && @strtotime ( $form_data[ 'rule_value' ] ) )
+		{
+			//Register a error if element rule didn't pass
+			$check = @strtotime ( $form_data[ 'field_value' ] );
+			if ( $check == FALSE || $check < strtotime ( $form_data[ 'rule_value' ] ) )
+			{
+				//Register error
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+					$form_data[ 'label' ] ,
+					$form_data[ 'rule_value' ]
+				) );
+			}
+		}
+	}
+
+	/**
+	 * Check maximum allowed date.
+	 *
+	 * @param array $form_data
+	 */
+	public function max_date ( $form_data = array () )
+	{
+		if ( ! empty( $form_data[ 'field_value' ] ) && @strtotime ( $form_data[ 'rule_value' ] ) )
+		{
+			//Register a error if element rule didn't pass
+			$check = @strtotime ( $form_data[ 'field_value' ] );
+			if ( $check == FALSE || $check > strtotime ( $form_data[ 'rule_value' ] ) )
+			{
+				//Register error
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+					$form_data[ 'label' ] ,
+					$form_data[ 'rule_value' ]
+				) );
+			}
+		}
+	}
+
+	/**
 	 * Check if element value start with some string or number
 	 *
 	 * @param array $form_data
@@ -1002,7 +1049,7 @@ class WBB_Form_Validation
 	public function valid_zip ( $form_data = array () )
 	{
 
-		if ( ! empty( $form_data[ 'field_value' ] ))
+		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
 
 			$ZIPREG = array (
@@ -1054,6 +1101,110 @@ class WBB_Form_Validation
 	// Security rules--------------------------------------------------------------------
 
 	/**
+	 * Sanitizes a filename replacing whitespace with dashes
+	 * Removes special characters that are illegal in filenames on certain
+	 * operating systems and special characters requiring special escaping
+	 * to manipulate at the command line. Replaces spaces and consecutive
+	 * dashes with a single dash. Trim period, dash and underscore from beginning
+	 * and end of filename.
+	 *
+	 * @param array $form_data
+	 *
+	 * @return mixed|string
+	 */
+	public function sanitize_file_name ( $form_data = array () )
+	{
+		if ( $form_data[ 'rule_value' ] === TRUE )
+		{
+			// Remove special accented characters - ie. sí.
+			$clean_name                            = strtr ( $form_data[ 'field_value' ] , array (
+				'Š' => 'S' ,
+				'Ž' => 'Z' ,
+				'š' => 's' ,
+				'ž' => 'z' ,
+				'Ÿ' => 'Y' ,
+				'À' => 'A' ,
+				'Á' => 'A' ,
+				'Â' => 'A' ,
+				'Ã' => 'A' ,
+				'Ä' => 'A' ,
+				'Å' => 'A' ,
+				'Ç' => 'C' ,
+				'È' => 'E' ,
+				'É' => 'E' ,
+				'Ê' => 'E' ,
+				'Ë' => 'E' ,
+				'Ì' => 'I' ,
+				'Í' => 'I' ,
+				'Î' => 'I' ,
+				'Ï' => 'I' ,
+				'Ñ' => 'N' ,
+				'Ò' => 'O' ,
+				'Ó' => 'O' ,
+				'Ô' => 'O' ,
+				'Õ' => 'O' ,
+				'Ö' => 'O' ,
+				'Ø' => 'O' ,
+				'Ù' => 'U' ,
+				'Ú' => 'U' ,
+				'Û' => 'U' ,
+				'Ü' => 'U' ,
+				'Ý' => 'Y' ,
+				'à' => 'a' ,
+				'á' => 'a' ,
+				'â' => 'a' ,
+				'ã' => 'a' ,
+				'ä' => 'a' ,
+				'å' => 'a' ,
+				'ç' => 'c' ,
+				'è' => 'e' ,
+				'é' => 'e' ,
+				'ê' => 'e' ,
+				'ë' => 'e' ,
+				'ì' => 'i' ,
+				'í' => 'i' ,
+				'î' => 'i' ,
+				'ï' => 'i' ,
+				'ñ' => 'n' ,
+				'ò' => 'o' ,
+				'ó' => 'o' ,
+				'ô' => 'o' ,
+				'õ' => 'o' ,
+				'ö' => 'o' ,
+				'ø' => 'o' ,
+				'ù' => 'u' ,
+				'ú' => 'u' ,
+				'û' => 'u' ,
+				'ü' => 'u' ,
+				'ý' => 'y' ,
+				'ÿ' => 'y'
+			) );
+			$clean_name                            = strtr ( $clean_name , array (
+				'Þ' => 'TH' ,
+				'þ' => 'th' ,
+				'Ð' => 'DH' ,
+				'ð' => 'dh' ,
+				'ß' => 'ss' ,
+				'Œ' => 'OE' ,
+				'œ' => 'oe' ,
+				'Æ' => 'AE' ,
+				'æ' => 'ae' ,
+				'µ' => 'u'
+			) );
+			$_POST[ $form_data[ 'element_name' ] ] = preg_replace ( array (
+				'/\s/' ,
+				'/\.[\.]+/' ,
+				'/[^\w_\.\-]/'
+			) , array (
+				'_' ,
+				'.' ,
+				''
+			) , $clean_name );
+
+		}
+	}
+
+	/**
 	 *  XSS Clean
 	 *
 	 * @param array $form_data
@@ -1097,6 +1248,32 @@ class WBB_Form_Validation
 
 
 	/**
+	 * Examples:
+	 * echo normal_chars('Álix----_Ãxel!?!?'); // Alix Axel
+	 * echo normal_chars('áéíóúÁÉÍÓÚ'); // aeiouAEIOU
+	 * echo normal_chars('üÿÄËÏÖÜŸåÅ'); // uyAEIOUYaA
+	 *
+	 * @param array $form_data
+	 */
+	public function  normal_chars ( $form_data = array () )
+	{
+		if ( $form_data[ 'rule_value' ] === TRUE )
+		{
+			$string = htmlentities ( $form_data[ 'field_value' ] , ENT_QUOTES , 'UTF-8' );
+			$string = preg_replace ( '~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i' , '$1' , $string );
+			$string = html_entity_decode ( $string , ENT_QUOTES , 'UTF-8' );
+			$string = preg_replace ( array (
+				'~[^0-9a-z]~i' ,
+				'~[ -]+~'
+			) , ' ' , $string );
+
+			// we are done...
+			$_POST[ $form_data[ 'element_name' ] ] = trim ( $string , ' -' );
+
+		}
+	}
+
+	/**
 	 * Add "http://" or "https://"  to the field
 	 *
 	 * @param array $form_data
@@ -1138,6 +1315,72 @@ class WBB_Form_Validation
 		}
 	}
 
+
+	/**
+	 * Function: sanitize
+	 * Returns a sanitized string, typically for URLs.
+	 * Parameters:
+	 * $force_lowercase - Force the string to lowercase?
+	 * $clean - If set to *true*, will remove all non-alphanumeric characters.
+	 *
+	 * @param array $form_data
+	 */
+	public function slugify ( $form_data = array () )
+	{
+
+		if ( $form_data[ 'rule_value' ] === TRUE )
+		{
+			$force_lowercase      = TRUE;
+			$clean_non_alph_chars = TRUE;
+
+			$strip = array (
+				"~" ,
+				"`" ,
+				"!" ,
+				"@" ,
+				"#" ,
+				"$" ,
+				"%" ,
+				"^" ,
+				"&" ,
+				"*" ,
+				"(" ,
+				")" ,
+				"_" ,
+				"=" ,
+				"+" ,
+				"[" ,
+				"{" ,
+				"]" ,
+				"}" ,
+				"\\" ,
+				"|" ,
+				";" ,
+				":" ,
+				"\"" ,
+				"'" ,
+				"&#8216;" ,
+				"&#8217;" ,
+				"&#8220;" ,
+				"&#8221;" ,
+				"&#8211;" ,
+				"&#8212;" ,
+				"â€”" ,
+				"â€“" ,
+				"," ,
+				"<" ,
+				"." ,
+				">" ,
+				"/" ,
+				"?"
+			);
+			$clean = trim ( str_replace ( $strip , "" , strip_tags ( $form_data[ 'field_value' ] ) ) );
+			$clean = preg_replace ( '/\s+/' , "" , $clean );
+			$clean = ( $clean_non_alph_chars ) ? preg_replace ( "/[^a-zA-Z0-9]/" , "-" , $clean ) : $clean;
+
+			$_POST[ $form_data[ 'element_name' ] ] = ( $force_lowercase ) ? ( function_exists ( 'mb_strtolower' ) ) ? mb_strtolower ( $clean , 'UTF-8' ) : strtolower ( $clean ) : $clean;
+		}
+	}
 
 	/**
 	 * Prep data for form
