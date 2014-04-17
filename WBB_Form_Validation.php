@@ -50,7 +50,7 @@ class WBB_Form_Validation
 	 *
 	 * @var
 	 */
-	public $WBB_default_error_messages = array (
+	protected $WBB_default_error_messages = array (
 		//Files
 		'required_file'      => '%s is required. ' ,
 		'allowed_file_types' => '%s is invalid file type.' ,
