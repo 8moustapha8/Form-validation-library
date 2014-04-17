@@ -54,61 +54,57 @@ class WBB_Form_Validation
 	 *
 	 * @var
 	 */
-	protected $WBB_default_error_messages = array (
-		'required'                  => '%s is required. ' ,
-		'required_file'             => '%s is required. ' ,
-		'min_length'                => '%s must be at least %d characters or longer.' ,
-		'max_length'                => '%s must be no longer than %d characters.' ,
-		'str_between_length'        => '%s must be between min length %d and  max length %d.' ,
-		'num_between_length'        => '%s must be between %d and length %d.' ,
-		'valid_url'                 => '%s is an invalid url.' ,
-		'real_url'                  => '%s must be a real url' ,
-		'regex_match'               => '%s is an invalid data format.' ,
-		'matches'                   => '%s must match %s .' ,
-		'not_matches'               => '%s must not match with %s' ,
-		'exact_length'              => '%s must be exactly %d characters in length.' ,
-		'valid_email'               => '%s is an invalid email address.' ,
-		'valid_emails'              => '%s has to be valid emails : %s' ,
-		'valid_ip'                  => '%s is an invalid IP format.' ,
-		'alpha'                     => '%s is an invalid alpha format.' ,
-		'alpha_numeric'             => '%s is an invalid alpha-numeric format.' ,
-		'alpha_dash'                => '%s %s is an invalid alpha-dash format.' ,
-		'numeric'                   => '%s is an invalid numeric format.' ,
-		'is_numeric'                => '%s is not numeric.' ,
-		'integer'                   => '%s must consist of integer value.' ,
-		'decimal'                   => '%s must consist of decimal value.' ,
-		'greater_than'              => '%s must be greater than %d .' ,
-		'less_than'                 => '%s must be less than %d .' ,
-		'is_natural'                => '%s is not natural.' ,
-		'is_natural_no_zero'        => '%s is a Natural number, but not a zero  (1,2,3, etc.)' ,
-		'valid_base64'              => '%s is invalid base 64 data' ,
-		'word_limit'                => '%s must be no longer than %d words.' ,
-		'ccnum'                     => '%s has to be a valid credit card number format' ,
-		'between'                   => '%s must be number between %d and %d.' ,
-		'valid_date'                => '%s must be a valid date' ,
-		'min_date'                  => '%s must be a date greater then or equal to %s' ,
-		'valid_phone'               => '%s is invalid phone format number.' ,
-		'max_date'                  => '%s must be a date later then or equal to %s' ,
-		'allowed_file_types'        => '%s is invalid file type.' ,
-		'one_of'                    => '%s has to be one of the allowed ones : %s' ,
-		'valid_zip'                 => '%s is invalid ZIP format.' ,
-		'start_with'                => '%s must start with %s' ,
-		'not_start_with'            => '%s must not start with %s' ,
-		'ends_with'                 => '%s must end with %s' ,
-		'not_ends_with'             => '%s must not end with %s' ,
-		'prep_url'                  => '' ,
-		'encode_php_tags'           => '' ,
-		'prep_for_form'             => '' ,
-		'xss_clean'                 => '' ,
-		'sanitize_file_name'        => '' ,
-		'normal_chars'              => '' ,
-		'slugify'                   => '' ,
-		''                          => '---------------TODO:---------------------------------' ,
-		'callback'                  => '%s' ,
-		'strip_image_tags'          => '' ,
-		'strip_image_tagsxss_clean' => '' ,
-
-
+	public $WBB_default_error_messages = array (
+		'required'           => '%s is required. ' ,
+		'required_file'      => '%s is required. ' ,
+		'min_length'         => '%s must be at least %d characters or longer.' ,
+		'max_length'         => '%s must be no longer than %d characters.' ,
+		'str_between_length' => '%s must be between min length %d and  max length %d.' ,
+		'num_between_length' => '%s must be between %d and length %d.' ,
+		'valid_url'          => '%s is an invalid url.' ,
+		'real_url'           => '%s must be a real url' ,
+		'regex_match'        => '%s is an invalid data format.' ,
+		'matches'            => '%s must match %s .' ,
+		'not_matches'        => '%s must not match with %s' ,
+		'exact_length'       => '%s must be exactly %d characters in length.' ,
+		'valid_email'        => '%s is an invalid email address.' ,
+		'valid_emails'       => '%s has to be valid emails : %s' ,
+		'valid_ip'           => '%s is an invalid IP format.' ,
+		'alpha'              => '%s is an invalid alpha format.' ,
+		'alpha_numeric'      => '%s is an invalid alpha-numeric format.' ,
+		'alpha_dash'         => '%s %s is an invalid alpha-dash format.' ,
+		'numeric'            => '%s is an invalid numeric format.' ,
+		'is_numeric'         => '%s is not numeric.' ,
+		'integer'            => '%s must consist of integer value.' ,
+		'decimal'            => '%s must consist of decimal value.' ,
+		'greater_than'       => '%s must be greater than %d .' ,
+		'less_than'          => '%s must be less than %d .' ,
+		'is_natural'         => '%s is not natural.' ,
+		'is_natural_no_zero' => '%s is a Natural number, but not a zero  (1,2,3, etc.)' ,
+		'valid_base64'       => '%s is invalid base 64 data' ,
+		'word_limit'         => '%s must be no longer than %d words.' ,
+		'ccnum'              => '%s has to be a valid credit card number format' ,
+		'between'            => '%s must be number between %d and %d.' ,
+		'valid_date'         => '%s must be a valid date' ,
+		'min_date'           => '%s must be a date greater then or equal to %s' ,
+		'valid_phone'        => '%s is invalid phone format number.' ,
+		'max_date'           => '%s must be a date later then or equal to %s' ,
+		'allowed_file_types' => '%s is invalid file type.' ,
+		'one_of'             => '%s has to be one of the allowed ones : %s' ,
+		'valid_zip'          => '%s is invalid ZIP format.' ,
+		'start_with'         => '%s must start with %s' ,
+		'not_start_with'     => '%s must not start with %s' ,
+		'ends_with'          => '%s must end with %s' ,
+		'not_ends_with'      => '%s must not end with %s' ,
+		'prep_url'           => '' ,
+		'encode_php_tags'    => '' ,
+		'prep_for_form'      => '' ,
+		'xss_clean'          => '' ,
+		'sanitize_file_name' => '' ,
+		'normal_chars'       => '' ,
+		'slugify'            => '' ,
+		'strip_image_tags'   => '' ,
+		'callback'           => '' ,
 	);
 
 	//Utils Functions---------------------------------------------------------------------------------------------------
@@ -1479,5 +1475,31 @@ class WBB_Form_Validation
 		}
 	}
 
+	/**
+	 * Strip Image Tags
+	 * ex: <img src="test.jpg"> will output test.jpg.
+	 *
+	 * @param array $form_data
+	 */
+	public function strip_image_tags ( $form_data = array () )
+	{
+		if ( $form_data[ 'rule_value' ] === TRUE )
+		{
+			$str = preg_replace ( "#<img\s+.*?src\s*=\s*[\"'](.+?)[\"'].*?\>#" , "\\1" , $form_data[ 'field_value' ] );
+			$str = preg_replace ( "#<img\s+.*?src\s*=\s*(.+?).*?\>#" , "\\1" , $str );
 
+			$_POST[ $form_data[ 'element_name' ] ] = $str;
+
+		}
+	}
+
+	/**
+	 * Use certain callback function
+	 *
+	 * @param array $form_data
+	 */
+	public function callback ( $form_data = array () )
+	{
+		call_user_func ( $form_data[ 'rule_value' ] , $form_data );
+	}
 }
