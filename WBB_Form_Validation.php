@@ -17,14 +17,12 @@ class WBB_Form_Validation
 	 */
 	public $WBB_getErrors;
 
-
 	/**
 	 * Store all rules from multiple forms
 	 *
 	 * @var array
 	 */
 	protected $_WBB_getRules = array ();
-
 
 	/**
 	 * Store current form requested data
@@ -40,7 +38,6 @@ class WBB_Form_Validation
 	 */
 	protected $_WBB_submittedFormId = FALSE;
 
-
 	/**
 	 * Store current form requested files
 	 *
@@ -48,28 +45,41 @@ class WBB_Form_Validation
 	 */
 	protected $_WBB_formSubmittedFiles = array ();
 
-
 	/**
 	 * Default Errors Messages
 	 *
 	 * @var
 	 */
 	public $WBB_default_error_messages = array (
-		'required'           => '%s is required. ' ,
+		//Files
 		'required_file'      => '%s is required. ' ,
+		'allowed_file_types' => '%s is invalid file type.' ,
+		//Text's
+		'required'           => '%s is required. ' ,
 		'min_length'         => '%s must be at least %d characters or longer.' ,
 		'max_length'         => '%s must be no longer than %d characters.' ,
 		'str_between_length' => '%s must be between min length %d and  max length %d.' ,
 		'num_between_length' => '%s must be between %d and length %d.' ,
+		'word_limit'         => '%s must be no longer than %d words.' ,
+		'exact_length'       => '%s must be exactly %d characters in length.' ,
+		'greater_than'       => '%s must be greater than %d .' ,
+		'less_than'          => '%s must be less than %d .' ,
+		'between'            => '%s must be number between %d and %d.' ,
 		'valid_url'          => '%s is an invalid url.' ,
 		'real_url'           => '%s must be a real url' ,
-		'regex_match'        => '%s is an invalid data format.' ,
-		'matches'            => '%s must match %s .' ,
-		'not_matches'        => '%s must not match with %s' ,
-		'exact_length'       => '%s must be exactly %d characters in length.' ,
 		'valid_email'        => '%s is an invalid email address.' ,
 		'valid_emails'       => '%s has to be valid emails : %s' ,
 		'valid_ip'           => '%s is an invalid IP format.' ,
+		'valid_date'         => '%s must be a valid date' ,
+		'valid_phone'        => '%s is invalid phone format number.' ,
+		'valid_base64'       => '%s is invalid base 64 data' ,
+		'valid_zip'          => '%s is invalid ZIP format.' ,
+		'ccnum'              => '%s has to be a valid credit card number format' ,
+		'regex_match'        => '%s is an invalid data format.' ,
+		'matches'            => '%s must match %s .' ,
+		'not_matches'        => '%s must not match with %s' ,
+		'min_date'           => '%s must be a date greater then or equal to %s' ,
+		'max_date'           => '%s must be a date later then or equal to %s' ,
 		'alpha'              => '%s is an invalid alpha format.' ,
 		'alpha_numeric'      => '%s is an invalid alpha-numeric format.' ,
 		'alpha_dash'         => '%s %s is an invalid alpha-dash format.' ,
@@ -77,25 +87,14 @@ class WBB_Form_Validation
 		'is_numeric'         => '%s is not numeric.' ,
 		'integer'            => '%s must consist of integer value.' ,
 		'decimal'            => '%s must consist of decimal value.' ,
-		'greater_than'       => '%s must be greater than %d .' ,
-		'less_than'          => '%s must be less than %d .' ,
 		'is_natural'         => '%s is not natural.' ,
 		'is_natural_no_zero' => '%s is a Natural number, but not a zero  (1,2,3, etc.)' ,
-		'valid_base64'       => '%s is invalid base 64 data' ,
-		'word_limit'         => '%s must be no longer than %d words.' ,
-		'ccnum'              => '%s has to be a valid credit card number format' ,
-		'between'            => '%s must be number between %d and %d.' ,
-		'valid_date'         => '%s must be a valid date' ,
-		'min_date'           => '%s must be a date greater then or equal to %s' ,
-		'valid_phone'        => '%s is invalid phone format number.' ,
-		'max_date'           => '%s must be a date later then or equal to %s' ,
-		'allowed_file_types' => '%s is invalid file type.' ,
 		'one_of'             => '%s has to be one of the allowed ones : %s' ,
-		'valid_zip'          => '%s is invalid ZIP format.' ,
 		'start_with'         => '%s must start with %s' ,
 		'not_start_with'     => '%s must not start with %s' ,
 		'ends_with'          => '%s must end with %s' ,
 		'not_ends_with'      => '%s must not end with %s' ,
+		//Security
 		'prep_url'           => '' ,
 		'encode_php_tags'    => '' ,
 		'prep_for_form'      => '' ,
@@ -203,7 +202,13 @@ class WBB_Form_Validation
 		return FALSE;
 	}
 
-
+	/**
+	 * Set error text format
+	 *
+	 * @param       $element_name
+	 * @param       $rule_name
+	 * @param array $vsprintf_data
+	 */
 	public function WBB_setErrorTextFormat ( $element_name , $rule_name , $vsprintf_data = array () )
 	{
 		$this->WBB_getErrors[ $element_name ] = vsprintf ( $this->WBB_default_error_messages[ $rule_name ] , $vsprintf_data );
@@ -251,8 +256,7 @@ class WBB_Form_Validation
 		}
 	}
 
-	//Default Form Validation Rules---------------------------------------------------------------------------------------------
-
+	//Default Form Validation Rules-------------------------------------------------------------------------------------
 
 	/**
 	 * Required data works only for elements text, textarea
@@ -376,7 +380,6 @@ class WBB_Form_Validation
 		}
 	}
 
-
 	/**
 	 * Validate URL
 	 *
@@ -403,7 +406,6 @@ class WBB_Form_Validation
 	 *
 	 * @return bool
 	 */
-
 	public function real_url ( $form_data = array () )
 	{
 		//Register a error if element rule didn't pass
@@ -525,7 +527,6 @@ class WBB_Form_Validation
 		}
 	}
 
-
 	/**
 	 * Exact Length
 	 *
@@ -542,7 +543,6 @@ class WBB_Form_Validation
 			) );
 		}
 	}
-
 
 	/**
 	 * Valid Email
@@ -715,7 +715,6 @@ class WBB_Form_Validation
 		}
 	}
 
-
 	/**
 	 *  Greater than
 	 *
@@ -736,7 +735,6 @@ class WBB_Form_Validation
 			}
 		}
 	}
-
 
 	/**
 	 *  Less than
@@ -843,7 +841,6 @@ class WBB_Form_Validation
 
 	}
 
-
 	/**
 	 * Field must be number between X and Y.
 	 *
@@ -874,7 +871,6 @@ class WBB_Form_Validation
 		}
 	}
 
-
 	/**
 	 * Check if string is one of the rule array or rule string ("val1, val2, val3") or array("val1","val2", "val3")
 	 *
@@ -900,7 +896,6 @@ class WBB_Form_Validation
 
 	}
 
-
 	/**
 	 * Field must be valid date.
 	 *
@@ -920,7 +915,8 @@ class WBB_Form_Validation
 		}
 	}
 
-	/**Check for valid phone number ex 0034 123 123 123 or (0034) 123 123 123
+	/**
+	 * Check for valid phone number ex 0034 123 123 123 or (0034) 123 123 123
 	 *
 	 * @param array $form_data
 	 */
@@ -1163,8 +1159,6 @@ class WBB_Form_Validation
 
 	}
 
-
-
 	// Security rules--------------------------------------------------------------------
 
 	/**
@@ -1313,7 +1307,6 @@ class WBB_Form_Validation
 		}
 	}
 
-
 	/**
 	 * Examples:
 	 * echo normal_chars('Álix----_Ãxel!?!?'); // Alix Axel
@@ -1381,7 +1374,6 @@ class WBB_Form_Validation
 			) , $form_data[ 'field_value' ] );
 		}
 	}
-
 
 	/**
 	 * Function: sanitize
