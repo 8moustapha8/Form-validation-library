@@ -50,7 +50,7 @@ class WBB_Form_Validation
 	 *
 	 * @var
 	 */
-	protected $WBB_default_error_messages = array (
+	public $WBB_default_error_messages = array (
 		//Files
 		'required_file'      => '%s is required. ' ,
 		'allowed_file_types' => '%s is invalid file type.' ,
@@ -166,6 +166,29 @@ class WBB_Form_Validation
 			return $this->WBB_getErrors[ $element_name ];
 		}
 
+	}
+
+	/**
+	 * Get form element value after form was submitted
+	 *
+	 * @param      $element_name
+	 * @param bool $echo
+	 *
+	 * @return mixed
+	 */
+	public function WBB_getValue ( $element_name , $echo = FALSE )
+	{
+		if ( ! empty( $this->_WBB_formSubmittedData[ $element_name ] ) )
+		{
+			if ( $echo )
+			{
+				echo $this->_WBB_formSubmittedData[ $element_name ];
+			}
+			else
+			{
+				return $this->_WBB_formSubmittedData[ $element_name ];
+			}
+		}
 	}
 
 	/**
