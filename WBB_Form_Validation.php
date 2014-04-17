@@ -68,6 +68,7 @@ class WBB_Form_Validation
 		'not_matches'               => '%s must not match with %s' ,
 		'exact_length'              => '%s must be exactly %d characters in length.' ,
 		'valid_email'               => '%s is an invalid email address.' ,
+		'valid_emails'              => '%s has to be valid emails : %s' ,
 		'valid_ip'                  => '%s is an invalid IP format.' ,
 		'alpha'                     => '%s is an invalid alpha format.' ,
 		'alpha_numeric'             => '%s is an invalid alpha-numeric format.' ,
@@ -86,6 +87,7 @@ class WBB_Form_Validation
 		'between'                   => '%s must be number between %d and %d.' ,
 		'valid_date'                => '%s must be a valid date' ,
 		'min_date'                  => '%s must be a date greater then or equal to %s' ,
+		'valid_phone'               => '%s is invalid phone format number.' ,
 		'max_date'                  => '%s must be a date later then or equal to %s' ,
 		'allowed_file_types'        => '%s is invalid file type.' ,
 		'one_of'                    => '%s has to be one of the allowed ones : %s' ,
@@ -103,11 +105,9 @@ class WBB_Form_Validation
 		'slugify'                   => '' ,
 		''                          => '---------------TODO:---------------------------------' ,
 		'callback'                  => '%s' ,
-		'valid_emails'              => '%s has to be valid emails' ,
 		'strip_image_tags'          => '' ,
 		'strip_image_tagsxss_clean' => '' ,
 
-		'valid_phone'               => '%s is invalid phone format number.' ,
 
 	);
 
@@ -921,6 +921,77 @@ class WBB_Form_Validation
 				//Register error
 				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
 			}
+		}
+	}
+
+	/**Check for valid phone number ex 0034 123 123 123 or (0034) 123 123 123
+	 *
+	 * @param array $form_data
+	 */
+	public function valid_phone ( $form_data = array () )
+	{
+		if ( ! empty( $form_data[ 'field_value' ] ) && $form_data[ 'rule_value' ] === TRUE )
+		{
+			//Register a error if element rule didn't pass
+			$check = (bool) preg_match ( '/^(?:\((\+?\d+)?\)|\+?\d+) ?\d*(-?\d{2,3} ?){0,4}$/' , $form_data[ 'field_value' ] );
+			if ( $check == FALSE )
+			{
+				//Register error
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+			}
+		}
+	}
+
+	/**
+	 * Check for multiple valid emails in one element
+	 * examples: test@yahoo.com,test2@gmail.com
+	 *
+	 * @param array $form_data
+	 */
+	public function valid_emails ( $form_data = array () )
+	{
+		if ( ! empty( $form_data[ 'field_value' ] ) && $form_data[ 'rule_value' ] === TRUE )
+		{
+
+			$emails = explode ( ',' , $form_data[ 'field_value' ] );
+
+			//Multiple emails
+			if ( is_array ( $emails ) )
+			{
+				$error_check = array ();
+				foreach ( $emails as $email_check )
+				{
+					//Register a error if element rule didn't pass
+					$check = preg_match ( "/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix" , trim ( $email_check ) );
+					if ( $check == FALSE )
+					{
+						$error_check[ ] = $email_check;
+					}
+				}
+
+				if ( ! empty( $error_check ) )
+				{
+					$wrong_emails = implode ( "," , $error_check );
+					//Register error
+					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+						$form_data[ 'label' ] ,
+						$wrong_emails
+					) );
+				}
+			}
+			//Single email
+			else
+			{
+				//Register a error if element rule didn't pass
+				$check = preg_match ( "/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix" , $form_data[ 'field_value' ] );
+				if ( $check == FALSE )
+				{
+					//Register error
+					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				}
+			}
+
+
 		}
 	}
 
