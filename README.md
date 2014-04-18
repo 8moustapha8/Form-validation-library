@@ -137,3 +137,20 @@ To set your own custom message you can either edit that file, or use the followi
 - The text you would like displayed.
 
 ***If you include %s in your error string, it will be replaced with the "human" name you used for your field when you set your rules.***
+
+#Showing Errors Individually
+
+If you prefer to show an error message next to each form field, rather than as a array, you can use the `$WBB->WBB_getError ( 'form1_element1' , 'form1' , TRUE );` function.
+
+`$WBB->WBB_getError ( 'form1_element1' , 'form1' , TRUE );`
+
+***The above function takes three parameters as input:***
+
+`'form1_element1'`
+- The exact name you've given the form field.
+
+`'form1'`
+- The form submitted id
+
+`TRUE`
+- If is set to true the element label from `$forms_rules` will be included intro the text right after the text error.
