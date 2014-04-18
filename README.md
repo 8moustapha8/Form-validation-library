@@ -101,3 +101,21 @@ Sanitize the data for security.
 ***Since you haven't told the Form Validation class to validate anything yet, it returns FALSE (boolean false) by default.***
 
 ***The WBB_runForm() function only returns TRUE if it has successfully applied your rules without any of them failing.***
+
+#Setting Validation Rules
+
+WBB Form Validation lets you set as many validation rules as you need for a given field, cascading them in order, and it even lets you prep and pre-process the field data at the same time.
+To set validation rules you will use the `WBB_setRule()` function:
+
+`$WBB->WBB_setRule ( 'form1_element2' , array ( 'min_length' => 2 ) , 'form1' );`
+
+***The above function takes three parameters as input:***
+
+`form1_element2`
+- The exact name you've given the form field.
+
+`array ( 'min_length' => 2 )`
+- The form rules applied to the element `form1_element2`
+
+`'form1'`
+- The form submitted id
