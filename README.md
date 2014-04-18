@@ -212,7 +212,170 @@ The one you will use is:
 
 #Utils functions
 
-***Coming soon.***
+***WBB_setRules ( $forms_rules )***
+
+Define values to validate. Set  Form Rules Array
+
+**Parameters**
+
+$forms_rules : The array of the form rules.
+
+**ex:**
+
+    <?php
+
+    //Include form validation class
+    include ( "WBB_Form_Validation.php" );
+
+    //Set Form 1 rules
+    $forms_rules = array (
+        //Form1
+        'form1' => array (
+            'form1_element1' => array (
+                'label' => 'Form1 Element1' ,
+                'rules' => array (
+                    'required' => TRUE
+                )
+            ) ,
+            'form1_element2' => array (
+                'label' => 'Form1 Element2' ,
+                'rules' => array (
+                    'num_between_length' => array (
+                        'min' => 5 ,
+                        'max' => 10
+                    )
+                )
+            ) ,
+        )
+    );
+
+    //Init Class
+    $WBB = new WBB_Form_Validation();
+
+    //Assign the rules to the class
+    $WBB->WBB_setRules ( $forms_rules );
+
+
+***WBB_setRule ( $element , $rule_array , $submitted_form_id )***
+
+Add new rule to certain element
+
+**Parameters**
+
+$element : The form element name that the rule should be applied.
+
+$rule_array : The array of the form rules.
+
+$submitted_form_id : The submitted form id.
+
+**ex:**
+
+`$WBB->WBB_setRule ( 'form2_element2' , array ( 'min_length' => 2 ) , 'form2' );`
+
+***WBB_setCustomErrorMessage ( $rule , $error_msg )***
+
+Set Custom  Error Message
+
+**Parameters**
+
+$rule : Rule name
+
+$error_msg : New Rule Error Message
+
+**ex:**
+
+`$WBB->WBB_setCustomErrorMessage ( 'required' , '%s - REQUIRED' );`
+
+***WBB_getError ( $element_name , $submitted_form_id , $show_label = FALSE )***
+
+Get individual element error
+
+**Parameters**
+
+$element_name : The exact name you've given the form field.
+
+$submitted_form_id : The form submitted id
+
+$show_label : If is set to true the element label from `$forms_rules` will be included intro the text right after the text error. Default FALSE
+
+**ex:**
+
+    <p>
+        <label
+            for="form1_element1"><?php echo $WBB->WBB_getError ( 'form1_element1' , 'form1' , TRUE ); ?></label><br/>
+        <input type="text" name="form1_element1" id="form1_element1">
+    </p>
+
+
+***WBB_getValue ( $element_name , $echo = FALSE )***
+
+Get form element value after form was submitted
+
+**Parameters**
+
+$element_name : The exact name you've given the form field.
+
+$echo : If set to TRUE the function will echo the result if set to FALSE it will return the result, default FALSE.
+
+**ex:**
+
+ `<input type="text" name="form2_element3" id="form1_element1"  value="<?php $WBB->WBB_getValue ( 'form1_element1' ) ?>">`
+
+ ***WBB_runForm ( $submit_form_id )***
+
+ Run form validation
+
+
+ **Parameters**
+
+ $submit_form_id : The form submitted id
+
+ **ex:**
+
+    //Processing Form1
+    if ( $WBB->WBB_runForm ( 'form1' ) )
+    {
+        echo "Form 1 successfully submitted";
+    }
+    else
+    {
+
+        print_r ( $WBB->WBB_getErrors );
+
+    }
+
+ ***WBB_setErrorTextFormat ( $element_name , $rule_name , $vsprintf_data = array () )***
+
+ Set error text format
+
+ **Parameters**
+
+ $element_name :  The exact name you've given the form field.
+
+ $rule_name : The rule name
+
+ $vsprintf_data : Formatted string
+
+ **ex:**
+
+    /**
+     * Required data works only for elements text, textarea
+     *
+     * @param array $form_data
+     *
+     * @return bool
+     */
+    public function required ( $form_data = array () )
+    {
+
+        //Register a error if element rule didn't pass
+        if ( empty( $form_data[ 'field_value' ] ) && $form_data[ 'rule_value' ] === TRUE )
+        {
+            //Register error
+            $this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+        }
+    }
+
 
 #Rules Fucntions
 
