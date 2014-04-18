@@ -89,3 +89,15 @@ Sanitize the data for security.
     }
 
     ?>
+
+#Try it!
+
+***To try your form, visit your site using a URL similar to this one:***
+
+***example.com/myform.php If you submit the form you should simply see the form reload.***
+
+***That's because you haven't set up any validation rules yet.***
+
+***Since you haven't told the Form Validation class to validate anything yet, it returns FALSE (boolean false) by default.***
+
+***The WBB_runForm() function only returns TRUE if it has successfully applied your rules without any of them failing.***

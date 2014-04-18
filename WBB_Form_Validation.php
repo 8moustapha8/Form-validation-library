@@ -222,7 +222,7 @@ class WBB_Form_Validation
 			return empty( $this->WBB_getErrors );
 		}
 
-		return TRUE;
+		return FALSE;
 	}
 
 	/**
