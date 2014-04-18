@@ -22,28 +22,28 @@ class WBB_Form_Validation
 	 *
 	 * @var array
 	 */
-	protected $_WBB_getRules = array ();
+	public $_WBB_getRules = array ();
 
 	/**
 	 * Store current form requested data
 	 *
 	 * @var array
 	 */
-	protected $_WBB_formSubmittedData = array ();
+	public $_WBB_formSubmittedData = array ();
 
 	/**
 	 * Store current submitted form id
 	 *
 	 * @var
 	 */
-	protected $_WBB_submittedFormId = FALSE;
+	public $_WBB_submittedFormId = FALSE;
 
 	/**
 	 * Store current form requested files
 	 *
 	 * @var array
 	 */
-	protected $_WBB_formSubmittedFiles = array ();
+	public $_WBB_formSubmittedFiles = array ();
 
 	/**
 	 * Default Errors Messages
@@ -201,7 +201,7 @@ class WBB_Form_Validation
 	public function WBB_runForm ( $submit_form_id )
 	{
 		//Check if form was submitted
-		if ( isset( $_REQUEST[ $submit_form_id ] ) )
+		if ( isset( $_REQUEST[ $submit_form_id ] ) && empty( $this->_WBB_getRules ) == FALSE )
 		{
 
 			//Store current submitted id
@@ -222,7 +222,7 @@ class WBB_Form_Validation
 			return empty( $this->WBB_getErrors );
 		}
 
-		return FALSE;
+		return TRUE;
 	}
 
 	/**

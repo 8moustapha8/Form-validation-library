@@ -23,7 +23,7 @@ Sanitize the data for security.
 
     <h1>Form 1</h1>
     <p>
-        <form method="post">
+        <form method="post" action="form_process.php">
 
             <p>
                 <label for="form1_element1"><?php echo $WBB->WBB_getError ( 'form1_element1' , 'form1' , TRUE ); ?></label><br/>
@@ -38,3 +38,54 @@ Sanitize the data for security.
             <p><input type="submit" name="form1" value="submit Form 1"></p>
         </form>
     </p>
+
+#The Process Page
+**Using a text editor, create a form called** ***form_process.php***
+
+    <?php
+
+    //Include form validation class
+    include ( "WBB_Form_Validation.php" );
+
+    //Set Form 1 rules
+    $forms_rules = array (
+        //Form1
+        'form1' => array (
+            'form1_element1' => array (
+                'label' => 'Form1 Element1' ,
+                'rules' => array (
+                    'required' => TRUE
+                )
+            ) ,
+            'form1_element2' => array (
+                'label' => 'Form1 Element2' ,
+                'rules' => array (
+                    'num_between_length' => array (
+                        'min' => 5 ,
+                        'max' => 10
+                    )
+                )
+            ) ,
+        )
+    );
+
+    //Init Class
+    $WBB = new WBB_Form_Validation();
+
+    //Assign the rules to the class
+    $WBB->WBB_setRules ( $forms_rules );
+
+    //Processing Form1
+    if ( $WBB->WBB_runForm ( 'form1' ) )
+    {
+        //Successfully processed form
+        echo "Form 1 successfully submitted";
+    }
+    else
+    {
+        //Show all errors
+        print_r ( $WBB->WBB_getErrors );
+
+    }
+
+    ?>
