@@ -119,3 +119,21 @@ To set validation rules you will use the `WBB_setRule()` function:
 
 `'form1'`
 - The form submitted id
+
+# Setting Custom Error Messages.
+
+***Permits you to set custom error messages.***
+
+All of the native error messages are located in the  `WBB_Form_Validation.php` file in `$WBB_default_error_messages` variable.
+
+To set your own custom message you can either edit that file, or use the following function:
+
+`$WBB->WBB_setCustomErrorMessage ( 'required' , '%s - REQUIRED' );`
+
+`required`
+- Corresponds to the name of a particular rule.
+
+`'%s - REQUIRED'`
+- The text you would like displayed.
+
+***If you include %s in your error string, it will be replaced with the "human" name you used for your field when you set your rules.***
