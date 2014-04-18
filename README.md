@@ -193,3 +193,19 @@ If you prefer to show an error message next to each form field, rather than as a
 
 `TRUE`
 - If is set to true the element label from `$forms_rules` will be included intro the text right after the text error.
+
+#Re-populating the form
+
+Thus far we have only been dealing with errors.
+
+It's time to repopulate the form field with the submitted data. WBB Form Validation offer one function that permit you to do this.
+
+The one you will use most commonly is:
+
+`$WBB->WBB_getValue ( 'form1_element1', TRUE )`
+
+ `'form1_element1'`
+ - The exact name you've given the form field.
+
+ `TRUE`
+ - If this parameter is set top TRUE the function will echo teh value if false the function will return the value, default :false
