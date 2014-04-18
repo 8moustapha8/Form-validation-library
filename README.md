@@ -377,6 +377,32 @@ $echo : If set to TRUE the function will echo the result if set to FALSE it will
     }
 
 
+#Class defined objects.
+
+***$WBB->WBB_getErrors;***
+
+Get all form validation errors (array)
+
+***$WBB->_WBB_getRules***
+
+Get defined rules
+
+***$WBB->_WBB_formSubmittedData***
+
+Get current form requested data
+
+***$WBB->_WBB_submittedFormId***
+
+Get current submitted form id
+
+***$WBB->_WBB_formSubmittedFiles***
+
+Get current form requested files
+
+***$WBB->WBB_default_error_messages***
+
+Get default Errors Messages
+
 #Rules Fucntions
 
 ***Coming soon.***
