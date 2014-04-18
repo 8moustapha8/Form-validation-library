@@ -39,6 +39,40 @@ Sanitize the data for security.
         </form>
     </p>
 
+#Creating Sets of Rules
+
+In order to organize your rules into "sets" requires that you place them into "sub arrays".
+
+Consider the following example, showing one sets of rules.
+
+We've arbitrarily called "form1" .
+
+You can name your rules anything you want:
+
+
+    //Set Form 1 rules
+    $forms_rules = array (
+        //Form1
+        'form1' => array (
+            'form1_element1' => array (
+                'label' => 'Form1 Element1' ,
+                'rules' => array (
+                    'required' => TRUE
+                )
+            ) ,
+            'form1_element2' => array (
+                'label' => 'Form1 Element2' ,
+                'rules' => array (
+                    'num_between_length' => array (
+                        'min' => 5 ,
+                        'max' => 10
+                    )
+                )
+            ) ,
+        )
+    );
+
+
 #The Process Page
 **Using a text editor, create a form called** ***form_process.php***
 
