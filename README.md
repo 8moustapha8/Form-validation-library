@@ -209,3 +209,11 @@ The one you will use most commonly is:
 
  `TRUE`
  - If this parameter is set top TRUE the function will echo teh value if false the function will return the value, default :false
+
+#Utils functions
+
+***Coming soon.***
+
+#Rules Fucntions
+
+***Coming soon.***
