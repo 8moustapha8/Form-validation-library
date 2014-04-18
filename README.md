@@ -200,7 +200,7 @@ Thus far we have only been dealing with errors.
 
 It's time to repopulate the form field with the submitted data. WBB Form Validation offer one function that permit you to do this.
 
-The one you will use most commonly is:
+The one you will use is:
 
 `$WBB->WBB_getValue ( 'form1_element1', TRUE )`
 
