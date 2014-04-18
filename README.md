@@ -138,9 +138,14 @@ To set your own custom message you can either edit that file, or use the followi
 
 ***If you include %s in your error string, it will be replaced with the "human" name you used for your field when you set your rules.***
 
+#Showing Errors as array
+You can show all errors in one array variable like this:
+
+`$WBB->WBB_getErrors`
+
 #Showing Errors Individually
 
-If you prefer to show an error message next to each form field, rather than as a array, you can use the `$WBB->WBB_getError ( 'form1_element1' , 'form1' , TRUE );` function.
+If you prefer to show an error message next to each form field, rather than as a array, you can use:
 
 `$WBB->WBB_getError ( 'form1_element1' , 'form1' , TRUE );`
 
