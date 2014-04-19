@@ -22,14 +22,14 @@ class WBB_Form_Validation
 	 *
 	 * @var array
 	 */
-	public $_WBB_getRules = array ();
+	public $_WBB_getRules = array();
 
 	/**
 	 * Store current form requested data
 	 *
 	 * @var array
 	 */
-	public $_WBB_formSubmittedData = array ();
+	public $_WBB_formSubmittedData = array();
 
 	/**
 	 * Store current submitted form id
@@ -43,14 +43,14 @@ class WBB_Form_Validation
 	 *
 	 * @var array
 	 */
-	public $_WBB_formSubmittedFiles = array ();
+	public $_WBB_formSubmittedFiles = array();
 
 	/**
 	 * Default Errors Messages
 	 *
 	 * @var
 	 */
-	public $WBB_default_error_messages = array (
+	public $WBB_default_error_messages = array(
 		//Files
 		'required_file'      => '%s is required. ' ,
 		'allowed_file_types' => '%s is invalid file type.' ,
@@ -214,7 +214,7 @@ class WBB_Form_Validation
 			$this->_WBB_formSubmittedFiles = $_FILES;
 
 			//Check for each form element their rules
-			array_walk ( $this->_WBB_getRules[ $submit_form_id ] , array (
+			array_walk ( $this->_WBB_getRules[ $submit_form_id ] , array(
 				$this ,
 				'_executeForm'
 			) );
@@ -232,7 +232,7 @@ class WBB_Form_Validation
 	 * @param       $rule_name
 	 * @param array $vsprintf_data
 	 */
-	public function WBB_setErrorTextFormat ( $element_name , $rule_name , $vsprintf_data = array () )
+	public function WBB_setErrorTextFormat ( $element_name , $rule_name , $vsprintf_data = array() )
 	{
 		$this->WBB_getErrors[ $element_name ] = vsprintf ( $this->WBB_default_error_messages[ $rule_name ] , $vsprintf_data );
 
@@ -257,7 +257,7 @@ class WBB_Form_Validation
 		foreach ( $rules as $rule_name => $rule_value )
 		{
 
-			$rule_check_param = array (
+			$rule_check_param = array(
 				//Form element value .
 				//OBS: $field_value can be also array in case we have $_FILES
 				'field_value'  => $field_value ,
@@ -272,7 +272,7 @@ class WBB_Form_Validation
 			);
 
 			//Apply callback rule to form element value
-			call_user_func ( array (
+			call_user_func ( array(
 				$this ,
 				$rule_name
 			) , $rule_check_param );
@@ -288,32 +288,65 @@ class WBB_Form_Validation
 	 *
 	 * @return bool
 	 */
-	public function required ( $form_data = array () )
+	public function required ( $form_data = array() )
 	{
 
 		//Register a error if element rule didn't pass
 		if ( empty( $form_data[ 'field_value' ] ) && $form_data[ 'rule_value' ] === TRUE )
 		{
 			//Register error
-			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 		}
 	}
 
 	/**
-	 * Required fiales works only for files elements
+	 * Required files works only for files elements
 	 *
 	 * @param array $form_data
 	 *
 	 * @return bool
 	 */
-	public function required_file ( $form_data = array () )
+	public function required_file ( $form_data = array() )
 	{
 
 		//Register a error if element rule didn't pass
 		if ( empty( $form_data[ 'field_value' ][ 'name' ] ) && $form_data[ 'rule_value' ] === TRUE )
 		{
 			//Register error
-			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
+		}
+	}
+
+	/**
+	 * Allowed file types works only for files elements, can be added as array or as string
+	 * ex: 'allowed_file_types' => 'text/plain|text/xml' , 'allowed_file_types' => array('text/plain','text/xml') ,
+	 *
+	 * @param array $form_data
+	 *
+	 * @return bool
+	 */
+	public function allowed_file_types ( $form_data = array() )
+	{
+		if ( ! empty( $form_data[ 'field_value' ][ 'name' ] ) )
+		{
+			if ( is_array ( $form_data[ 'rule_value' ] ) )
+			{
+				if ( ! in_array ( $form_data[ 'field_value' ][ 'type' ] , $form_data[ 'rule_value' ] ) )
+				{
+					//Register error
+					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
+				}
+			}
+			else
+			{
+				$file_types = explode ( '|' , trim ( $form_data[ 'rule_value' ] ) );
+
+				if ( ! in_array ( $form_data[ 'field_value' ][ 'type' ] , $file_types ) )
+				{
+					//Register error
+					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
+				}
+			}
 		}
 	}
 
@@ -324,14 +357,14 @@ class WBB_Form_Validation
 	 *
 	 * @return bool
 	 */
-	public function min_length ( $form_data = array () )
+	public function min_length ( $form_data = array() )
 	{
 
 		//Register a error if element rule didn't pass
 		if ( strlen ( $form_data[ 'field_value' ] ) < $form_data[ 'rule_value' ] || preg_match ( "/[^0-9]/" , $form_data[ 'rule_value' ] ) && $form_data[ 'field_value' ] !== FALSE )
 		{
 			//Register error
-			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 				$form_data[ 'label' ] ,
 				$form_data[ 'rule_value' ]
 			) );
@@ -345,13 +378,13 @@ class WBB_Form_Validation
 	 *
 	 * @return bool
 	 */
-	public function max_length ( $form_data = array () )
+	public function max_length ( $form_data = array() )
 	{
 		//Register a error if element rule didn't pass
 		if ( strlen ( $form_data[ 'field_value' ] ) > $form_data[ 'rule_value' ] || preg_match ( "/[^0-9]/" , $form_data[ 'rule_value' ] ) && $form_data[ 'field_value' ] !== FALSE )
 		{
 			//Register error
-			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 				$form_data[ 'label' ] ,
 				$form_data[ 'rule_value' ]
 			) );
@@ -365,7 +398,7 @@ class WBB_Form_Validation
 	 *
 	 * @return bool
 	 */
-	public function str_between_length ( $form_data = array () )
+	public function str_between_length ( $form_data = array() )
 	{
 
 		//Register a error if element rule didn't pass
@@ -373,7 +406,7 @@ class WBB_Form_Validation
 		if ( $check == FALSE )
 		{
 			//Register error
-			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 				$form_data[ 'label' ] ,
 				$form_data[ 'rule_value' ][ 'min' ] ,
 				$form_data[ 'rule_value' ][ 'max' ]
@@ -388,14 +421,14 @@ class WBB_Form_Validation
 	 *
 	 * @return bool
 	 */
-	public function num_between_length ( $form_data = array () )
+	public function num_between_length ( $form_data = array() )
 	{
 		//Register a error if element rule didn't pass
 		$check = isset( $form_data[ 'rule_value' ][ 'min' ] ) && isset( $form_data[ 'rule_value' ][ 'max' ] ) && $form_data[ 'field_value' ] >= $form_data[ 'rule_value' ][ 'min' ] && $form_data[ 'field_value' ] <= $form_data[ 'rule_value' ][ 'max' ];
 		if ( $check == FALSE || preg_match ( '/^[\-+]?[0-9]*\.?[0-9]+$/' , $form_data[ 'field_value' ] ) == FALSE )
 		{
 			//Register error
-			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 				$form_data[ 'label' ] ,
 				$form_data[ 'rule_value' ][ 'min' ] ,
 				$form_data[ 'rule_value' ][ 'max' ]
@@ -410,7 +443,7 @@ class WBB_Form_Validation
 	 *
 	 * @return bool
 	 */
-	public function valid_url ( $form_data = array () )
+	public function valid_url ( $form_data = array() )
 	{
 		//Register a error if element rule didn't pass
 		$pattern = "/^(http|https|ftp):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\/?/i";
@@ -418,7 +451,7 @@ class WBB_Form_Validation
 		if ( $check == FALSE && $form_data[ 'rule_value' ] === TRUE )
 		{
 			//Register error
-			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 		}
 	}
 
@@ -429,14 +462,14 @@ class WBB_Form_Validation
 	 *
 	 * @return bool
 	 */
-	public function real_url ( $form_data = array () )
+	public function real_url ( $form_data = array() )
 	{
 		//Register a error if element rule didn't pass
 		$check = @fsockopen ( $form_data[ 'field_value' ] , 80 , $errno , $errstr , 30 );
 		if ( $check == FALSE && $form_data[ 'rule_value' ] === TRUE )
 		{
 			//Register error
-			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 		}
 
 	}
@@ -448,14 +481,14 @@ class WBB_Form_Validation
 	 *
 	 * @return bool
 	 */
-	public function regex_match ( $form_data = array () )
+	public function regex_match ( $form_data = array() )
 	{
 		//Register a error if element rule didn't pass
 		$check = (bool) preg_match ( $form_data[ 'rule_value' ] , $form_data[ 'field_value' ] );
 		if ( $check == FALSE )
 		{
 			//Register error
-			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 		}
 	}
 
@@ -464,13 +497,13 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function matches ( $form_data = array () )
+	public function matches ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) ) //If Multiple elements added as array
 		{
 			if ( is_array ( $form_data[ 'rule_value' ] ) )
 			{
-				$get_not_match_labels = array ();
+				$get_not_match_labels = array();
 				foreach ( $form_data[ 'rule_value' ] as $check_matches )
 				{
 					if ( $form_data[ 'field_value' ] != $this->_WBB_formSubmittedData[ $check_matches ] )
@@ -483,7 +516,7 @@ class WBB_Form_Validation
 				{
 					$string = implode ( ',' , $get_not_match_labels );
 					//Register error
-					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 						$form_data[ 'label' ] ,
 						$string
 					) );
@@ -495,7 +528,7 @@ class WBB_Form_Validation
 				if ( $form_data[ 'field_value' ] != $this->_WBB_formSubmittedData[ $form_data[ 'rule_value' ] ] )
 				{
 					//Register error
-					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 						$form_data[ 'label' ] ,
 						$this->_WBB_getRules[ $this->_WBB_submittedFormId ][ $form_data[ 'rule_value' ] ][ 'label' ]
 					) );
@@ -509,14 +542,14 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function not_matches ( $form_data = array () )
+	public function not_matches ( $form_data = array() )
 	{
 		//If Multiple elements added as array
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
 			if ( is_array ( $form_data[ 'rule_value' ] ) )
 			{
-				$get_not_match_labels = array ();
+				$get_not_match_labels = array();
 				foreach ( $form_data[ 'rule_value' ] as $check_matches )
 				{
 					if ( $form_data[ 'field_value' ] == $this->_WBB_formSubmittedData[ $check_matches ] )
@@ -529,7 +562,7 @@ class WBB_Form_Validation
 				{
 					$string = implode ( ',' , $get_not_match_labels );
 					//Register error
-					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 						$form_data[ 'label' ] ,
 						$string
 					) );
@@ -541,7 +574,7 @@ class WBB_Form_Validation
 				if ( $form_data[ 'field_value' ] == $this->_WBB_formSubmittedData[ $form_data[ 'rule_value' ] ] )
 				{
 					//Register error
-					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 						$form_data[ 'label' ] ,
 						$this->_WBB_getRules[ $this->_WBB_submittedFormId ][ $form_data[ 'rule_value' ] ][ 'label' ]
 					) );
@@ -555,12 +588,12 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function exact_length ( $form_data = array () )
+	public function exact_length ( $form_data = array() )
 	{
 		if ( strlen ( $form_data[ 'field_value' ] ) != $form_data[ 'rule_value' ] || preg_match ( "/[^0-9]/" , $form_data[ 'rule_value' ] ) )
 		{
 			//Register error
-			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 				$form_data[ 'label' ] ,
 				$form_data[ 'rule_value' ]
 			) );
@@ -572,7 +605,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function valid_email ( $form_data = array () )
+	public function valid_email ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
@@ -581,7 +614,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE && $form_data[ 'rule_value' ] === TRUE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 	}
@@ -591,7 +624,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function valid_ip ( $form_data = array () )
+	public function valid_ip ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
@@ -600,7 +633,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE && $form_data[ 'rule_value' ] === TRUE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 	}
@@ -610,7 +643,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function alpha ( $form_data = array () )
+	public function alpha ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
@@ -619,7 +652,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE && $form_data[ 'rule_value' ] === TRUE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 	}
@@ -629,7 +662,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function alpha_numeric ( $form_data = array () )
+	public function alpha_numeric ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
@@ -638,7 +671,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE && $form_data[ 'rule_value' ] === TRUE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 	}
@@ -648,7 +681,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function alpha_dash ( $form_data = array () )
+	public function alpha_dash ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
@@ -657,7 +690,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE && $form_data[ 'rule_value' ] === TRUE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 	}
@@ -667,7 +700,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function numeric ( $form_data = array () )
+	public function numeric ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
@@ -676,7 +709,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE && $form_data[ 'rule_value' ] === TRUE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 	}
@@ -686,7 +719,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function is_numeric ( $form_data = array () )
+	public function is_numeric ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
@@ -695,7 +728,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE && $form_data[ 'rule_value' ] === TRUE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 	}
@@ -705,7 +738,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function integer ( $form_data = array () )
+	public function integer ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
@@ -714,7 +747,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE && $form_data[ 'rule_value' ] === TRUE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 	}
@@ -724,7 +757,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function decimal ( $form_data = array () )
+	public function decimal ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
@@ -733,7 +766,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE && $form_data[ 'rule_value' ] === TRUE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 	}
@@ -743,7 +776,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function greater_than ( $form_data = array () )
+	public function greater_than ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) && is_numeric ( $form_data[ 'field_value' ] ) )
 		{
@@ -751,7 +784,7 @@ class WBB_Form_Validation
 			if ( $form_data[ 'field_value' ] < $form_data[ 'rule_value' ] )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 					$form_data[ 'label' ] ,
 					$form_data[ 'rule_value' ]
 				) );
@@ -764,7 +797,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function less_than ( $form_data = array () )
+	public function less_than ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) && is_numeric ( $form_data[ 'field_value' ] ) )
 		{
@@ -772,7 +805,7 @@ class WBB_Form_Validation
 			if ( $form_data[ 'field_value' ] > $form_data[ 'rule_value' ] )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 					$form_data[ 'label' ] ,
 					$form_data[ 'rule_value' ]
 				) );
@@ -785,7 +818,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function is_natural ( $form_data = array () )
+	public function is_natural ( $form_data = array() )
 	{
 
 		if ( ! empty( $form_data[ 'field_value' ] ) && $form_data[ 'rule_value' ] === TRUE )
@@ -795,7 +828,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 
@@ -806,7 +839,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function is_natural_no_zero ( $form_data = array () )
+	public function is_natural_no_zero ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) && $form_data[ 'rule_value' ] === TRUE )
 		{
@@ -815,7 +848,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE || $form_data[ 'field_value' ] == 0 )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 
@@ -828,7 +861,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function valid_base64 ( $form_data = array () )
+	public function valid_base64 ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) && $form_data[ 'rule_value' ] === TRUE )
 		{
@@ -837,7 +870,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 
@@ -849,7 +882,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function ccnum ( $form_data = array () )
+	public function ccnum ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) && $form_data[ 'rule_value' ] === TRUE )
 		{
@@ -858,7 +891,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 
@@ -869,7 +902,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function between ( $form_data = array () )
+	public function between ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
@@ -885,7 +918,7 @@ class WBB_Form_Validation
 			if ( in_array ( $form_data[ 'field_value' ] , call_user_func_array ( "range" , $betwee_val ) ) == FALSE || ! is_numeric ( $form_data[ 'field_value' ] ) )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 					$form_data[ 'label' ] ,
 					$betwee_val[ 0 ] ,
 					$betwee_val[ 1 ]
@@ -899,7 +932,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function one_of ( $form_data = array () )
+	public function one_of ( $form_data = array() )
 	{
 
 		if ( ! empty( $form_data[ 'field_value' ] ) )
@@ -910,7 +943,7 @@ class WBB_Form_Validation
 			if ( ! in_array ( $form_data[ 'field_value' ] , $check_if_is_in ) )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 					$form_data[ 'label' ] ,
 					$allowed_ones ,
 				) );
@@ -924,7 +957,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function valid_date ( $form_data = array () )
+	public function valid_date ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) && $form_data[ 'rule_value' ] === TRUE )
 		{
@@ -933,7 +966,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 	}
@@ -943,7 +976,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function valid_phone ( $form_data = array () )
+	public function valid_phone ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) && $form_data[ 'rule_value' ] === TRUE )
 		{
@@ -952,7 +985,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 			}
 		}
 	}
@@ -963,7 +996,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function valid_emails ( $form_data = array () )
+	public function valid_emails ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) && $form_data[ 'rule_value' ] === TRUE )
 		{
@@ -973,7 +1006,7 @@ class WBB_Form_Validation
 			//Multiple emails
 			if ( is_array ( $emails ) )
 			{
-				$error_check = array ();
+				$error_check = array();
 				foreach ( $emails as $email_check )
 				{
 					//Register a error if element rule didn't pass
@@ -988,7 +1021,7 @@ class WBB_Form_Validation
 				{
 					$wrong_emails = implode ( "," , $error_check );
 					//Register error
-					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 						$form_data[ 'label' ] ,
 						$wrong_emails
 					) );
@@ -1002,7 +1035,7 @@ class WBB_Form_Validation
 				if ( $check == FALSE )
 				{
 					//Register error
-					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 				}
 			}
 
@@ -1015,7 +1048,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function min_date ( $form_data = array () )
+	public function min_date ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) && @strtotime ( $form_data[ 'rule_value' ] ) )
 		{
@@ -1024,7 +1057,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE || $check < strtotime ( $form_data[ 'rule_value' ] ) )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 					$form_data[ 'label' ] ,
 					$form_data[ 'rule_value' ]
 				) );
@@ -1037,7 +1070,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function max_date ( $form_data = array () )
+	public function max_date ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) && @strtotime ( $form_data[ 'rule_value' ] ) )
 		{
@@ -1046,7 +1079,7 @@ class WBB_Form_Validation
 			if ( $check == FALSE || $check > strtotime ( $form_data[ 'rule_value' ] ) )
 			{
 				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 					$form_data[ 'label' ] ,
 					$form_data[ 'rule_value' ]
 				) );
@@ -1059,13 +1092,13 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function start_with ( $form_data = array () )
+	public function start_with ( $form_data = array() )
 	{
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
 			if ( strpos ( $form_data[ 'field_value' ] , $form_data[ 'rule_value' ] ) !== 0 && ( ! empty( $form_data[ 'field_value' ] ) ) )
 			{
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 					$form_data[ 'label' ] ,
 					$form_data[ 'rule_value' ]
 				) );
@@ -1078,14 +1111,14 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function not_start_with ( $form_data = array () )
+	public function not_start_with ( $form_data = array() )
 	{
 
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
 			if ( strpos ( $form_data[ 'field_value' ] , $form_data[ 'rule_value' ] ) === 0 && ( ! empty( $form_data[ 'field_value' ] ) ) )
 			{
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 					$form_data[ 'label' ] ,
 					$form_data[ 'rule_value' ]
 				) );
@@ -1098,11 +1131,11 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function ends_with ( $form_data = array () )
+	public function ends_with ( $form_data = array() )
 	{
 		if ( ( ! empty( $form_data[ 'field_value' ] ) ) && ( substr_compare ( $form_data[ 'field_value' ] , $form_data[ 'rule_value' ] , - strlen ( $form_data[ 'rule_value' ] ) , strlen ( $form_data[ 'rule_value' ] ) ) !== 0 ) )
 		{
-			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 				$form_data[ 'label' ] ,
 				$form_data[ 'rule_value' ]
 			) );
@@ -1114,11 +1147,11 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function not_ends_with ( $form_data = array () )
+	public function not_ends_with ( $form_data = array() )
 	{
 		if ( ( ! empty( $form_data[ 'field_value' ] ) ) && ( substr_compare ( $form_data[ 'field_value' ] , $form_data[ 'rule_value' ] , - strlen ( $form_data[ 'rule_value' ] ) , strlen ( $form_data[ 'rule_value' ] ) ) === 0 ) )
 		{
-			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+			$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 				$form_data[ 'label' ] ,
 				$form_data[ 'rule_value' ]
 			) );
@@ -1132,13 +1165,13 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function valid_zip ( $form_data = array () )
+	public function valid_zip ( $form_data = array() )
 	{
 
 		if ( ! empty( $form_data[ 'field_value' ] ) )
 		{
 
-			$ZIPREG = array (
+			$ZIPREG = array(
 				"US" => "^\d{5}([\-]?\d{4})?$" ,
 				"UK" => "^(GIR|[A-Z]\d[A-Z\d]??|[A-Z]{2}\d[A-Z\d]??)[ ]??(\d[A-Z]{2})$" ,
 				"DE" => "\b((?:0[1-46-9]\d{3})|(?:[1-357-9]\d{4})|(?:[4][0-24-9]\d{3})|(?:[6][013-9]\d{3}))\b" ,
@@ -1155,7 +1188,7 @@ class WBB_Form_Validation
 
 			if ( is_array ( $form_data[ 'rule_value' ] ) )
 			{
-				$true = array ();
+				$true = array();
 				foreach ( $form_data[ 'rule_value' ] as $r )
 				{
 					if ( preg_match ( "/" . $ZIPREG[ $r ] . "/i" , $form_data[ 'field_value' ] ) )
@@ -1166,7 +1199,7 @@ class WBB_Form_Validation
 
 				if ( ! in_array ( TRUE , $true ) )
 				{
-					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 				}
 
 			}
@@ -1175,7 +1208,7 @@ class WBB_Form_Validation
 				if ( ! preg_match ( "/" . $ZIPREG[ $form_data[ 'rule_value' ] ] . "/i" , $form_data[ 'field_value' ] ) )
 				{
 					//Validation failed, provided zip/postal code is not valid.
-					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array ( $form_data[ 'label' ] ) );
+					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array( $form_data[ 'label' ] ) );
 				}
 			}
 		}
@@ -1196,12 +1229,12 @@ class WBB_Form_Validation
 	 *
 	 * @return mixed|string
 	 */
-	public function sanitize_file_name ( $form_data = array () )
+	public function sanitize_file_name ( $form_data = array() )
 	{
 		if ( $form_data[ 'rule_value' ] === TRUE )
 		{
 			// Remove special accented characters - ie. sí.
-			$clean_name                            = strtr ( $form_data[ 'field_value' ] , array (
+			$clean_name                            = strtr ( $form_data[ 'field_value' ] , array(
 				'Š' => 'S' ,
 				'Ž' => 'Z' ,
 				'š' => 's' ,
@@ -1263,7 +1296,7 @@ class WBB_Form_Validation
 				'ý' => 'y' ,
 				'ÿ' => 'y'
 			) );
-			$clean_name                            = strtr ( $clean_name , array (
+			$clean_name                            = strtr ( $clean_name , array(
 				'Þ' => 'TH' ,
 				'þ' => 'th' ,
 				'Ð' => 'DH' ,
@@ -1275,11 +1308,11 @@ class WBB_Form_Validation
 				'æ' => 'ae' ,
 				'µ' => 'u'
 			) );
-			$_POST[ $form_data[ 'element_name' ] ] = preg_replace ( array (
+			$_POST[ $form_data[ 'element_name' ] ] = preg_replace ( array(
 				'/\s/' ,
 				'/\.[\.]+/' ,
 				'/[^\w_\.\-]/'
-			) , array (
+			) , array(
 				'_' ,
 				'.' ,
 				''
@@ -1293,16 +1326,16 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function xss_clean ( $form_data = array () )
+	public function xss_clean ( $form_data = array() )
 	{
 		if ( $form_data[ 'rule_value' ] === TRUE )
 		{
 			// Fix &entity\n;
-			$data = str_replace ( array (
+			$data = str_replace ( array(
 				'&amp;' ,
 				'&lt;' ,
 				'&gt;'
-			) , array (
+			) , array(
 				'&amp;amp;' ,
 				'&amp;lt;' ,
 				'&amp;gt;'
@@ -1338,14 +1371,14 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function  normal_chars ( $form_data = array () )
+	public function  normal_chars ( $form_data = array() )
 	{
 		if ( $form_data[ 'rule_value' ] === TRUE )
 		{
 			$string = htmlentities ( $form_data[ 'field_value' ] , ENT_QUOTES , 'UTF-8' );
 			$string = preg_replace ( '~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i' , '$1' , $string );
 			$string = html_entity_decode ( $string , ENT_QUOTES , 'UTF-8' );
-			$string = preg_replace ( array (
+			$string = preg_replace ( array(
 				'~[^0-9a-z]~i' ,
 				'~[ -]+~'
 			) , ' ' , $string );
@@ -1361,7 +1394,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function prep_url ( $form_data = array () )
+	public function prep_url ( $form_data = array() )
 	{
 		if ( $form_data[ 'rule_value' ] === TRUE )
 		{
@@ -1380,16 +1413,16 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function encode_php_tags ( $form_data = array () )
+	public function encode_php_tags ( $form_data = array() )
 	{
 		if ( $form_data[ 'rule_value' ] === TRUE )
 		{
-			$_POST[ $form_data[ 'element_name' ] ] = str_replace ( array (
+			$_POST[ $form_data[ 'element_name' ] ] = str_replace ( array(
 				'<?php' ,
 				'<?PHP' ,
 				'<?' ,
 				'?>'
-			) , array (
+			) , array(
 				'&lt;?php' ,
 				'&lt;?PHP' ,
 				'&lt;?' ,
@@ -1407,7 +1440,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function slugify ( $form_data = array () )
+	public function slugify ( $form_data = array() )
 	{
 
 		if ( $form_data[ 'rule_value' ] === TRUE )
@@ -1415,7 +1448,7 @@ class WBB_Form_Validation
 			$force_lowercase      = TRUE;
 			$clean_non_alph_chars = TRUE;
 
-			$strip = array (
+			$strip = array(
 				"~" ,
 				"`" ,
 				"!" ,
@@ -1471,17 +1504,17 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function prep_for_form ( $form_data = array () )
+	public function prep_for_form ( $form_data = array() )
 	{
 
 		if ( $form_data[ 'rule_value' ] === TRUE )
 		{
-			$_POST[ $form_data[ 'element_name' ] ] = str_replace ( array (
+			$_POST[ $form_data[ 'element_name' ] ] = str_replace ( array(
 				"'" ,
 				'"' ,
 				'<' ,
 				'>'
-			) , array (
+			) , array(
 				"&#39;" ,
 				"&quot;" ,
 				'&lt;' ,
@@ -1496,7 +1529,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function strip_image_tags ( $form_data = array () )
+	public function strip_image_tags ( $form_data = array() )
 	{
 		if ( $form_data[ 'rule_value' ] === TRUE )
 		{
@@ -1513,7 +1546,7 @@ class WBB_Form_Validation
 	 *
 	 * @param array $form_data
 	 */
-	public function callback ( $form_data = array () )
+	public function callback ( $form_data = array() )
 	{
 		call_user_func ( $form_data[ 'rule_value' ] , $form_data );
 	}
