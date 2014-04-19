@@ -405,4 +405,717 @@ Get default Errors Messages
 
 #Rules Functions
 
-***Coming soon.***
+***required_file***
+
+Returns FALSE if the form element is empty (only for file's).
+
+**ex:**
+
+    'form2_file_element1' => array(
+        'label' => 'Form2 File Element1' ,
+        'rules' => array(
+            'required_file' => TRUE ,
+
+        )
+    ) ,
+
+***allowed_file_types***
+
+Allowed file types works only for files elements, can be added as array or as string, accept only mime types.
+
+**ex as string:**
+
+    'form2_file_element1' => array(
+        'label' => 'Form2 File Element1' ,
+        'rules' => array(
+            'required_file' => TRUE ,
+            'allowed_file_types' => 'text/plain|text/xml' ,
+
+        )
+    ) ,
+
+**ex as array:**
+
+    'form2_file_element1' => array(
+            'label' => 'Form2 File Element1' ,
+            'rules' => array(
+                'required_file'      => TRUE ,
+                'allowed_file_types' => array( 'text/plain','text/xml' ) ,
+
+            )
+        ) ,
+
+***required***
+
+Returns FALSE if the form element is empty (only for textarea's and text's).
+
+**ex:**
+
+    'form2_element1'      => array(
+        'label' => 'Form2 Element1' ,
+        'rules' => array(
+            'required' => TRUE
+        )
+    ) ,
+
+***min_length***
+
+Returns FALSE if the form element is shorter then the parameter value.
+
+**ex:**
+
+    'form1_element2' => array(
+        'label' => 'Form1 Element2' ,
+        'rules' => array(
+            'min_length' => 12
+        )
+    ) ,
+
+***max_length***
+
+Returns FALSE if the form element is longer then the parameter value.
+
+**ex:**
+
+    'form1_element2' => array(
+        'label' => 'Form1 Element2' ,
+        'rules' => array(
+            'max_length' => 12
+        )
+    ) ,
+
+***str_between_length***
+
+Returns FALSE if the form element is not between x,y length.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'str_between_length' => array(
+                'min' => 4 ,
+                'max' => 8
+            )
+        )
+    ) ,
+
+***num_between_length***
+
+Returns FALSE if the form element is not between x,y number.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'num_between_length' => array(
+                'min' => 4 ,
+                'max' => 8
+            )
+        )
+    ) ,
+
+***word_limit***
+
+Returns FALSE if the form element words number greater then x.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'word_limit' => 12
+        )
+    ) ,
+
+***exact_length***
+
+Returns FALSE if the form element characters length is not exactly the parameter value.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'exact_length' => 12
+        )
+    ) ,
+
+***greater_than***
+
+Returns FALSE if the form element is less than the parameter value or not numeric.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'greater_than' => 12
+        )
+    ) ,
+
+***less_than***
+
+Returns FALSE if the form element is greater than the parameter value or not numeric.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'less_than' => 12
+        )
+    ) ,
+
+***valid_url***
+
+Returns FALSE if the form element does not contain a valid url.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'valid_url' => TRUE
+        )
+    ) ,
+
+***real_url***
+
+Returns FALSE if the form element does not contain a real url.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'real_url' => TRUE
+        )
+    ) ,
+
+***valid_email***
+
+Returns FALSE if the form element does not contain a valid email format.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'valid_email' => TRUE
+        )
+    ) ,
+
+***valid_emails***
+
+Returns FALSE if the form element does not contain a valid email's.Input emails must be delimited by comma ex. "email1@email.com,email2@email.com" etc...
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'valid_emails' => TRUE
+        )
+    ) ,
+
+***valid_ip***
+
+Returns FALSE if the form element does not contain a valid IP format.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'valid_ip' => TRUE
+        )
+    ) ,
+
+***valid_date***
+
+Returns FALSE if the form element does not contain a valid date format.ex: 31-10-1986
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'valid_date' => TRUE
+        )
+    ) ,
+
+***valid_phone***
+
+Returns FALSE if the form element does not contain a valid phone number format.ex: (1231) 123 123 113, 1234 123123123
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'valid_date' => TRUE
+        )
+    ) ,
+
+***valid_base64***
+
+Returns FALSE if the form element does not contain a valid phone base64 data format.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'valid_base64' => TRUE
+        )
+    ) ,
+
+***valid_zip***
+
+Returns FALSE if the form element does not contain a valid zip format.
+
+Allowed countries:
+
+- US
+- UK
+- DE
+- CA
+- FR
+- IT
+- AU
+- NL
+- ES
+- DK
+- SE
+- BE
+
+**ex single:**
+
+    'valid_zip'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'valid_base64' => 'US'
+        )
+    ) ,
+
+**ex multiple:**
+
+    'valid_zip'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'valid_base64' => array('US','UK','NL')
+        )
+    ) ,
+
+***ccnum***
+
+Returns FALSE if the form element does not contain a valid CC number.
+
+CC types:
+
+- Visa,MasterCard
+- Discover
+- American Express
+- Diner's Club, JCB
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+            'ccnum' => TRUE
+        )
+    ) ,
+
+***regex_match***
+
+Returns FALSE if the form element does not pass certain regular expression rule.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'regex_match' => '/[A-Z]/' ,
+        )
+    ) ,
+
+***matches***
+
+Returns FALSE if the form element value does not Match to another/s.
+
+**ex as array:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'matches' => array('form2_element3','form2_element4') ,
+        )
+    ) ,
+
+**ex as string:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'matches' => 'form2_element3|form2_element4' ,
+        )
+    ) ,
+
+***not_matches***
+
+Returns FALSE if the form element value does Match to another/s.
+
+**ex as array:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'not_matches' => array('form2_element3','form2_element4') ,
+        )
+    ) ,
+
+**ex as string:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'not_matches' => 'form2_element3|form2_element4' ,
+        )
+    ) ,
+
+***min_date***
+
+Returns FALSE if the form element is less than the parameter value as date or not valid date format.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'min_date' => '31-10-1986' ,
+        )
+    ) ,
+
+***max_date***
+
+Returns FALSE if the form element is greater than the parameter value as date or not valid date format.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'max_date' => '31-10-1986' ,
+        )
+    ) ,
+
+***alpha***
+
+Returns FALSE if the form element not a valid alpha.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'alpha' => TRUE ,
+        )
+    ) ,
+
+***alpha_numeric***
+
+Returns FALSE if the form element not a valid alpha-numeric.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'alpha_numeric' => TRUE ,
+        )
+    ) ,
+
+***alpha_dash***
+
+Returns FALSE if the form element not a valid alpha-dash.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'alpha_dash' => TRUE ,
+        )
+    ) ,
+
+***numeric***
+
+Returns FALSE if the form element is an invalid numeric format..
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'numeric' => TRUE ,
+        )
+    ) ,
+
+***is_numeric***
+
+Returns FALSE if the form element not a numeric.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'is_numeric' => TRUE ,
+        )
+    ) ,
+
+***integer***
+
+Returns FALSE if the form element not a integer.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'integer' => TRUE ,
+        )
+    ) ,
+
+***decimal***
+
+Returns FALSE if the form element not a decimal.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'decimal' => TRUE ,
+        )
+    ) ,
+
+***is_natural***
+
+Returns FALSE if the form element not a natural.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'is_natural' => TRUE ,
+        )
+    ) ,
+
+***is_natural_no_zero***
+
+Returns FALSE if the form element not a natural but allowed 0.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'is_natural_no_zero' => TRUE ,
+        )
+    ) ,
+
+***one_of***
+
+Returns FALSE if the form element is not one of allowed value.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'one_of' => array("This", "Or This", "Or this one also") ,
+        )
+    ) ,
+
+***start_with***
+
+Returns FALSE if the form element not start with certain substring.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'start_with' => "this" ,
+        )
+    ) ,
+
+***not_start_with***
+
+Returns FALSE if the form element start with certain substring.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'not_start_with' => "this" ,
+        )
+    ) ,
+
+***ends_with***
+
+Returns FALSE if the form element not ends with certain substring.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'ends_with' => "this" ,
+        )
+    ) ,
+
+***not_ends_with***
+
+Returns FALSE if the form element ends with certain substring.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'not_ends_with' => "this" ,
+        )
+    ) ,
+
+***prep_url***
+
+Adds "http://" to URLs if missing.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'prep_url' => TRUE ,
+        )
+    ) ,
+
+***encode_php_tags***
+
+Converts PHP tags to entities.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'encode_php_tags' => TRUE ,
+        )
+    ) ,
+
+***prep_for_form***
+
+Converts special characters so that HTML data can be shown in a form field without breaking it.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'prep_for_form' => TRUE ,
+        )
+    ) ,
+
+***xss_clean***
+
+Runs the data through the XSS filtering function.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'xss_clean' => TRUE ,
+        )
+    ) ,
+
+***sanitize_file_name***
+
+Sanitize data for file name
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'sanitize_file_name' => TRUE ,
+        )
+    ) ,
+
+***normal_chars***
+
+Add normal chars
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'normal_chars' => TRUE ,
+        )
+    ) ,
+
+***slugify***
+
+Create slugs from strings
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'slugify' => TRUE ,
+        )
+    ) ,
+
+***strip_image_tags***
+
+Strips the HTML from image tags leaving the raw URL.
+
+**ex:**
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'strip_image_tags' => TRUE ,
+        )
+    ) ,
+
+***callback***
+
+Use a custom callback function for the element value
+
+**ex:**
+
+    function function_name($data)
+    {
+        echo $data['field_value'] ;
+        echo $data['element_name'] ;
+        echo $data['label'] ;
+        echo $data['rule_value'] ;
+        echo $data['rule_name'] ;
+    }
+
+    'form2_element2'      => array(
+        'label' => 'Form2 Element2' ,
+        'rules' => array(
+           'callback' => function_name ,
+        )
+    ) ,

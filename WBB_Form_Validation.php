@@ -64,7 +64,6 @@ class WBB_Form_Validation
 		'exact_length'       => '%s must be exactly %d characters in length.' ,
 		'greater_than'       => '%s must be greater than %d .' ,
 		'less_than'          => '%s must be less than %d .' ,
-		'between'            => '%s must be number between %d and %d.' ,
 		'valid_url'          => '%s is an invalid url.' ,
 		'real_url'           => '%s must be a real url' ,
 		'valid_email'        => '%s is an invalid email address.' ,
@@ -514,7 +513,7 @@ class WBB_Form_Validation
 
 				if ( ! empty( $get_not_match_labels ) )
 				{
-					$string = implode ( ',' , $get_not_match_labels );
+					$string = implode ( '|' , $get_not_match_labels );
 					//Register error
 					$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
 						$form_data[ 'label' ] ,
@@ -895,36 +894,6 @@ class WBB_Form_Validation
 			}
 		}
 
-	}
-
-	/**
-	 * Field must be number between X and Y.
-	 *
-	 * @param array $form_data
-	 */
-	public function between ( $form_data = array() )
-	{
-		if ( ! empty( $form_data[ 'field_value' ] ) )
-		{
-			if ( is_array ( $form_data[ 'rule_value' ] ) )
-			{
-				$betwee_val = $form_data[ 'rule_value' ];
-			}
-			else
-			{
-				$betwee_val = explode ( ',' , $form_data[ 'rule_value' ] );
-			}
-
-			if ( in_array ( $form_data[ 'field_value' ] , call_user_func_array ( "range" , $betwee_val ) ) == FALSE || ! is_numeric ( $form_data[ 'field_value' ] ) )
-			{
-				//Register error
-				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array(
-					$form_data[ 'label' ] ,
-					$betwee_val[ 0 ] ,
-					$betwee_val[ 1 ]
-				) );
-			}
-		}
 	}
 
 	/**
