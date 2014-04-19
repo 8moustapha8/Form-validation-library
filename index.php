@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: softmixt
- * Date: 7/04/14
- * Time: 18:56
- */
-
 
 include ( "WBB_Form_Validation.php" );
 
