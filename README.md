@@ -403,6 +403,6 @@ Get current form requested files
 
 Get default Errors Messages
 
-#Rules Fucntions
+#Rules Functions
 
 ***Coming soon.***
