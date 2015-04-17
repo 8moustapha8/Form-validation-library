@@ -54,6 +54,7 @@ class WBB_Form_Validation
 		//Files
 		'required_file'      => '%s is required. ' ,
 		'allowed_file_types' => '%s is invalid file type.' ,
+		'allowed_file_size'  => '%s file size exceeded , maximum allowed %d' ,
 		//Text's
 		'required'           => '%s is required. ' ,
 		'min_length'         => '%s must be at least %d characters or longer.' ,
@@ -348,6 +349,34 @@ class WBB_Form_Validation
 			}
 		}
 	}
+	
+	
+	/**
+	 * Allowed file types works only for files elements, can be added as array or as string
+	 * ex: 'allowed_file_size' => '1000' ,
+	 *
+	 * @param array $form_data
+	 *
+	 * @return bool
+	 */
+	public function allowed_file_size ( $form_data )
+	{
+
+		if ( ! empty( $form_data[ 'field_value' ][ 'name' ] ) )
+		{
+
+			if ( $form_data[ 'field_value' ][ 'size' ] > $form_data[ 'rule_value' ] )
+			{
+				//Register error
+				$this->WBB_setErrorTextFormat ( $form_data[ 'element_name' ] , $form_data[ 'rule_name' ] , array (
+					$form_data[ 'label' ] ,
+					$form_data[ 'rule_value' ]
+				) );
+			}
+
+		}
+	}
+	
 
 	/**
 	 * Minimum Length
